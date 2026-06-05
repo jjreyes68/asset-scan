@@ -530,7 +530,7 @@
 
   <div class="page-header">
     <h1>Team Schedule</h1>
-    <p>10-person &middot; 12-hour shifts &middot; split-week rotation &middot; starting Aug 3, 2025</p>
+    <p>10-person &middot; 12-hour shifts &middot; split-week rotation &middot; Aug 2025 – Aug 2027</p>
   </div>
 
   <!-- Intro blurb -->
@@ -634,7 +634,7 @@
       <span class="lbadge n2">N2 · 6pm–6am</span>
       <span class="lbadge off">off</span>
     </div>
-    <div class="scroll-note">52 weeks · starting Aug 3, 2025</div>
+    <div class="scroll-note">104 weeks · starting Aug 3, 2025</div>
     <div class="week-grid">
       <table>
         <thead>
@@ -653,7 +653,7 @@
       <label>Jump to week</label>
       <input type="text" id="jump-input" placeholder="e.g. 5 or 9/5" />
     </div>
-    <div class="scroll-note">52 weeks · starting Aug 3, 2025 · click a week to expand</div>
+    <div class="scroll-note">104 weeks (2 years) · starting Aug 3, 2025 · click a week to expand</div>
     <div class="crew-grid" id="crew-grid"></div>
   </div>
 
@@ -730,6 +730,7 @@
 
 <script>
 const START = new Date('2025-08-03T12:00:00');
+const TOTAL_WEEKS = 104; // 2 years
 const ROLES = ['D1','D2','D3','N1','N2'];
 const ROLE_CLS = {D1:'d1',D2:'d2',D3:'d3',N1:'n1',N2:'n2'};
 const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -1012,106 +1013,45 @@ function updateCoverageSuggestions(){
   });
 }
 
-// Helper function to normalize date to ISO string format
+// Normalize any date value (string, Firestore Timestamp, JS Date) to YYYY-MM-DD
 function normalizeDate(date){
-  if(typeof date === 'string'){
-    return date.trim();
-  } else if(date && typeof date.toDate === 'function'){
-    return fmtDateISO(date.toDate());
-  }
+  if(!date) return null;
+  if(typeof date === 'string') return date.trim().substring(0,10);
+  if(typeof date.toDate === 'function') return fmtDateISO(date.toDate()); // Firestore Timestamp
+  if(date instanceof Date) return fmtDateISO(date);
+  // Firestore Timestamp as plain object {seconds, nanoseconds}
+  if(typeof date.seconds === 'number') return fmtDateISO(new Date(date.seconds * 1000));
   return null;
 }
 
+// Check if a date string falls within a request's range, handling all formats
+function dateInRange(dateStr, req){
+  if(!req || !req.startDate || !req.endDate) return false;
+  const s = normalizeDate(req.startDate);
+  const e = normalizeDate(req.endDate);
+  if(!s || !e) return false;
+  return dateStr >= s && dateStr <= e;
+}
+
 function getTimeOffForPerson(personName, dateStr){
-  const d = dateStr.trim();
-  const match = state.timeOffRequests.find(req => {
-    if(req.personName !== personName) return false;
-    if(!req.startDate || !req.endDate) return false;
-    
-    // Handle different date formats (strings or Timestamps)
-    let startStr, endStr;
-    if(typeof req.startDate === 'string'){
-      startStr = req.startDate.trim();
-    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
-      startStr = fmtDateISO(req.startDate.toDate());
-    } else {
-      return false;
-    }
-    
-    if(typeof req.endDate === 'string'){
-      endStr = req.endDate.trim();
-    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
-      endStr = fmtDateISO(req.endDate.toDate());
-    } else {
-      return false;
-    }
-    
-    return d >= startStr && d <= endStr;
-  });
-  return match || null;
+  return state.timeOffRequests.find(req =>
+    req.personName === personName && dateInRange(dateStr, req)
+  ) || null;
 }
 
 function getCoverageForPerson(personName, dateStr){
-  const coveringFor = [];
-  state.timeOffRequests.forEach(req => {
-    if(!req.startDate || !req.endDate) return;
-    
-    // Handle different date formats (strings or Timestamps)
-    let startStr, endStr;
-    if(typeof req.startDate === 'string'){
-      startStr = req.startDate.trim();
-    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
-      startStr = fmtDateISO(req.startDate.toDate());
-    } else {
-      return;
-    }
-    
-    if(typeof req.endDate === 'string'){
-      endStr = req.endDate.trim();
-    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
-      endStr = fmtDateISO(req.endDate.toDate());
-    } else {
-      return;
-    }
-    
-    if(dateStr >= startStr && dateStr <= endStr){
-      if(req.coverage && req.coverage.includes(personName)){
-        coveringFor.push(req.personName);
-      }
-    }
-  });
-  return coveringFor;
+  return state.timeOffRequests
+    .filter(req => dateInRange(dateStr, req) && req.coverage && req.coverage.includes(personName))
+    .map(req => req.personName);
 }
 
 function getCoverageForDate(dateStr){
   const coverage = {};
-  state.timeOffRequests.forEach(req => {
-    if(!req.startDate || !req.endDate) return;
-    
-    // Handle different date formats (strings or Timestamps)
-    let startStr, endStr;
-    if(typeof req.startDate === 'string'){
-      startStr = req.startDate.trim();
-    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
-      startStr = fmtDateISO(req.startDate.toDate());
-    } else {
-      return;
-    }
-    
-    if(typeof req.endDate === 'string'){
-      endStr = req.endDate.trim();
-    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
-      endStr = fmtDateISO(req.endDate.toDate());
-    } else {
-      return;
-    }
-    
-    if(dateStr >= startStr && dateStr <= endStr){
-      (req.coverage || []).forEach(coverPerson => {
-        if(!coverage[coverPerson]) coverage[coverPerson] = [];
-        coverage[coverPerson].push(req.personName);
-      });
-    }
+  state.timeOffRequests.filter(req => dateInRange(dateStr, req)).forEach(req => {
+    (req.coverage || []).forEach(coverPerson => {
+      if(!coverage[coverPerson]) coverage[coverPerson] = [];
+      coverage[coverPerson].push(req.personName);
+    });
   });
   return coverage;
 }
@@ -1237,13 +1177,9 @@ function renderCalendar(){
     const eventsDiv = document.createElement('div');
     eventsDiv.className = 'cal-day-events';
 
-    if(weekIdx >= 0 && weekIdx < 52){
+    if(weekIdx >= 0 && weekIdx < TOTAL_WEEKS){
       const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-      const offToday = state.timeOffRequests.filter(r => {
-        const startStr = normalizeDate(r.startDate);
-        const endStr = normalizeDate(r.endDate);
-        return startStr && endStr && dateStr >= startStr && dateStr <= endStr;
-      });
+      const offToday = state.timeOffRequests.filter(r => dateInRange(dateStr, r));
 
       // Show first 3 people, then +N more
       const MAX_SHOW = 3;
@@ -1305,17 +1241,13 @@ function renderDayPanel(dateStr){
   const weekIdx = Math.floor((dateObj - START) / (7*24*60*60*1000));
   const dayOfWeek = dateObj.getDay();
 
-  if(weekIdx < 0 || weekIdx >= 52){
+  if(weekIdx < 0 || weekIdx >= TOTAL_WEEKS){
     panel.innerHTML = `<div class="day-panel-date">${fmtDatePretty(dateStr)}</div><div class="day-panel-sub">Outside schedule range</div>`;
     return;
   }
 
   const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-  const offToday = state.timeOffRequests.filter(r => {
-    const startStr = normalizeDate(r.startDate);
-    const endStr = normalizeDate(r.endDate);
-    return startStr && endStr && dateStr >= startStr && dateStr <= endStr;
-  });
+  const offToday = state.timeOffRequests.filter(r => dateInRange(dateStr, r));
   const icons = {vacation:'🏖️',sick:'🤒',personal:'📅'};
 
   // Split into day and night
@@ -1497,37 +1429,27 @@ function getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr){
   const result = [];
 
   base.forEach(person => {
-    const timeOff = getTimeOffForPerson(person.name, dateStr);
-    if(timeOff){
-      // Person is off — find who is covering them
-      const req = state.timeOffRequests.find(r => {
-        const startStr = normalizeDate(r.startDate);
-        const endStr = normalizeDate(r.endDate);
-        return r.personName === person.name &&
-          startStr && endStr &&
-          dateStr >= startStr && dateStr <= endStr;
-      });
-      if(req && req.coverage && req.coverage.length > 0){
-        req.coverage.forEach(coverName => {
-          // Add cover person in the absent person's role
-          result.push({
-            name: coverName,
-            role: person.role,
-            half: person.half,
-            covering: true,
-            coveringFor: person.name,
-            originalOff: timeOff.type
-          });
+    const req = state.timeOffRequests.find(r =>
+      r.personName === person.name && dateInRange(dateStr, r)
+    );
+    if(req){
+      // Person is off — inject their cover person(s) in their role
+      (req.coverage || []).forEach(coverName => {
+        result.push({
+          name: coverName,
+          role: person.role,
+          half: person.half,
+          covering: true,
+          coveringFor: person.name,
+          originalOff: req.type
         });
-      }
-      // The absent person is NOT added to the result (they're off)
+      });
+      // Absent person not added — they're off
     } else {
       result.push(person);
     }
   });
 
-  // De-duplicate: if a cover person appears multiple times (covering multiple people),
-  // keep all entries so each covered slot is represented
   const roleOrder = {D1:0,D2:1,D3:2,N1:3,N2:4};
   result.sort((a,b)=> roleOrder[a.role]-roleOrder[b.role]);
   return result;
@@ -1537,21 +1459,16 @@ function getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr){
 // Returns array of {personName, role, type} they are covering, if any, even on their scheduled off days
 function getCoverageExtraShifts(personName, dateStr){
   const extras = [];
-  state.timeOffRequests.forEach(req => {
-    const startStr = normalizeDate(req.startDate);
-    const endStr = normalizeDate(req.endDate);
-    if(startStr && endStr && dateStr >= startStr && dateStr <= endStr){
-      if(req.coverage && req.coverage.includes(personName)){
-        // Find the role of the absent person on this date
-        const dateObj = new Date(dateStr + 'T12:00:00');
-        const weekIdx = Math.floor((dateObj - START) / (7 * 24 * 60 * 60 * 1000));
-        const half = state.fh.includes(req.personName) ? 'fh' : 'bh';
-        const posIdx = state[half].indexOf(req.personName);
-        const role = posIdx >= 0 ? getRoleForOp(posIdx, weekIdx) : '?';
-        extras.push({ coveringFor: req.personName, role, type: req.type });
-      }
-    }
-  });
+  state.timeOffRequests
+    .filter(req => dateInRange(dateStr, req) && req.coverage && req.coverage.includes(personName))
+    .forEach(req => {
+      const dateObj = new Date(dateStr + 'T12:00:00');
+      const weekIdx = Math.floor((dateObj - START) / (7 * 24 * 60 * 60 * 1000));
+      const half = state.fh.includes(req.personName) ? 'fh' : 'bh';
+      const posIdx = state[half].indexOf(req.personName);
+      const role = posIdx >= 0 ? getRoleForOp(posIdx, weekIdx) : '?';
+      extras.push({ coveringFor: req.personName, role, type: req.type });
+    });
   return extras;
 }
 
@@ -1632,7 +1549,7 @@ function renderTable(){
   const off=`<span class="rbadge off">off</span>`;
   const icons={vacation:'🏖️',sick:'🤒',personal:'📅'};
 
-  for(let w=0;w<52;w++){
+  for(let w=0;w<TOTAL_WEEKS;w++){
     const tr=document.createElement('tr');
     if(w%2===1) tr.classList.add('alt');
     const role=getRoleForOp(posIdx,w);
@@ -1701,7 +1618,7 @@ function renderCrewGrid(){
   grid.querySelectorAll('.crew-week.open').forEach(el=>openWeeks.add(parseInt(el.dataset.week)));
   grid.innerHTML='';
 
-  for(let w=0;w<52;w++){
+  for(let w=0;w<TOTAL_WEEKS;w++){
     const weekEl=document.createElement('div');
     weekEl.className='crew-week'+(openWeeks.has(w)?' open':'');
     weekEl.dataset.week=w;
@@ -1807,7 +1724,7 @@ document.getElementById('jump-input').addEventListener('keydown',e=>{
   let weekIdx=-1;
   // Try plain number first
   const num=parseInt(val);
-  if(!isNaN(num) && num>=1 && num<=52){ weekIdx=num-1; }
+  if(!isNaN(num) && num>=1 && num<=TOTAL_WEEKS){ weekIdx=num-1; }
   else {
     // Try date like 9/5 or 9/5/2025
     const parts=val.split('/');
@@ -1816,7 +1733,7 @@ document.getElementById('jump-input').addEventListener('keydown',e=>{
       const day=parseInt(parts[1]);
       const year=parts[2]?parseInt(parts[2]):2025;
       const target=new Date(year,month,day);
-      for(let w=0;w<52;w++){
+      for(let w=0;w<TOTAL_WEEKS;w++){
         const ws=getWeekStart(w);
         const we=addDays(ws,6);
         if(target>=ws && target<=we){ weekIdx=w; break; }

@@ -67,13 +67,13 @@
   .half-card.fh .half-title { color: var(--blue-text); }
   .half-card.bh .half-title { color: var(--green-text); }
   .half-days { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
-  .drop-zone { min-height: 90px; border: 1.5px dashed var(--border-dashed); border-radius: var(--radius-sm); padding: 6px; display: flex; flex-direction: column; gap: 5px; transition: background 0.15s, border-color 0.15s; }
+  .drop-zone { min-height: 90px; border: 1.5px dashed var(--border-dashed); border-radius: var(--radius-sm); padding: 6px; display: flex; flex-direction: column; gap: 5px; transition: background 0.15s; }
   .drop-zone.drag-over { background: #f0f7ff; border-color: var(--blue-text); }
   .half-card.bh .drop-zone.drag-over { background: #f2f9ea; border-color: var(--green-text); }
   .hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: 'DM Mono', monospace; }
 
   /* Chips */
-  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: grab; user-select: none; border: 1px solid; transition: opacity 0.15s, transform 0.1s, box-shadow 0.1s; }
+  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: grab; user-select: none; border: 1px solid; transition: all 0.1s; }
   .chip:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   .chip:active { cursor: grabbing; transform: scale(0.98); }
   .chip.dragging { opacity: 0.3; }
@@ -93,7 +93,7 @@
 
   /* Tabs */
   .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 18px; border: none; background: none; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.15s, border-color 0.15s; }
+  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 18px; border: none; background: none; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.1s; }
   .tab-btn:hover { color: var(--text); }
   .tab-btn.active { color: var(--blue-text); border-bottom-color: var(--blue-text); }
   .tab-panel { display: none; }
@@ -106,7 +106,7 @@
     font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
     padding: 7px 30px 7px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border);
     background: var(--surface); color: var(--text); cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 10px center;
   }
   .picker-row select:focus { outline: 2px solid var(--blue-text); outline-offset: 1px; }
@@ -126,7 +126,7 @@
   .week-grid { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
   thead { position: sticky; top: 0; z-index: 1; }
-  th { font-weight: 500; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 10px; border-bottom: 1px solid var(--border); background: #f8f9fa; }
+  th { font-weight: 500; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 10px; border-bottom: 1px solid var(--border); background: white; }
   td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr.alt td { background: #fafbfc; }
@@ -233,7 +233,7 @@
   .crew-controls button { font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 6px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: background 0.1s; }
   .crew-controls button:hover { background: var(--bg); }
   .crew-controls label { font-size: 13px; color: var(--text-muted); margin-left: 8px; }
-  .crew-controls input[type=text] { font-family: 'DM Mono', monospace; font-size: 13px; padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); width: 120px; }
+  .crew-controls input[type=text] { font-family: 'DM Mono', monospace; font-size: 13px; padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text); }
   .crew-controls input:focus { outline: 2px solid var(--blue-text); outline-offset: 1px; }
 
   /* Intro blurb */
@@ -578,7 +578,7 @@
         <div class="pitch-card">
           <div class="pitch-icon">&#128181;</div>
           <div class="pitch-title">Your paycheck stays the same</div>
-          <div class="pitch-body">Same total hours as the existing schedule means your base pay and overtime don&rsquo;t change. No surprises on payday &mdash; what you earn now is what you&rsquo;ll earn on this schedule.</div>
+          <div class="pitch-body">Same total hours as the existing schedule means your base pay and overtime don&rsquo;t change. No surprises on payday &mdash; what you earn now is what you&rsquo;ll earn then.</div>
         </div>
       </div>
     </div>
@@ -755,10 +755,8 @@ const state = {
     currentYear: new Date().getFullYear()
   }
 };
-// Expose state globally so the Firebase module script can reach it
 window.__schedState = state;
 
-// Rerender function callable from module scope
 window.__schedRerender = function(){
   if(typeof renderTable === 'function') renderTable();
   if(typeof renderCrewGrid === 'function') renderCrewGrid();
@@ -788,9 +786,24 @@ function addDays(date, n){ const d=new Date(date); d.setDate(d.getDate()+n); ret
 function fmtDate(d){ return `${d.getMonth()+1}/${d.getDate()}`; }
 function fmtDateISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 
+// NEW: Check if person is on time-off for a given date
+function getTimeOffOnDate(personName, dateISO){
+  return state.timeOffRequests.find(req =>
+    req.personName === personName &&
+    req.startDate <= dateISO &&
+    req.endDate >= dateISO
+  );
+}
+
+// NEW: Get who's covering for a person on a given date
+function getCoverageForDate(personName, dateISO){
+  const timeOff = getTimeOffOnDate(personName, dateISO);
+  if(!timeOff || !timeOff.coverage) return [];
+  return timeOff.coverage;
+}
+
 // --- Firestore Functions ---
 function initFirestoreListener(){
-  
   if(!window.firebaseDB){
     console.error('Firebase DB not available');
     alert('Firebase not initialized. Please refresh the page.');
@@ -798,28 +811,21 @@ function initFirestoreListener(){
   }
   
   try{
-    // Try without orderBy first to avoid index requirements
     const q = window.firebaseCollection(window.firebaseDB, 'timeOffRequests');
     window.firebaseOnSnapshot(q, (snapshot)=>{
       const docs = snapshot.docs.map(doc=>({ id: doc.id, ...doc.data() }));
-      // Use window.__schedState so this module-scope callback reaches the main script's state
       if(window.__schedState){
         window.__schedState.timeOffRequests = docs;
       }
-      // Also call rerender via window function to avoid module scope issues
       if(typeof window.__schedRerender === 'function'){
         window.__schedRerender();
       }
     }, (error)=>{
       console.error('Snapshot listener error:', error);
-      console.error('Error code:', error.code);
-      console.error('Error message:', error.message);
       alert(`Firestore error: ${error.message}`);
     });
   }catch(e){
     console.error('Error setting up Firestore listener:', e);
-    console.error('Error code:', e.code);
-    console.error('Error message:', e.message);
     alert(`Error setting up Firestore: ${e.message}`);
   }
 }
@@ -831,7 +837,7 @@ async function saveTimeOffRequest(data){
   }
   try{
     if(data.id){
-        await window.firebaseUpdateDoc(window.firebaseDoc(window.firebaseDB, 'timeOffRequests', data.id), {
+      await window.firebaseUpdateDoc(window.firebaseDoc(window.firebaseDB, 'timeOffRequests', data.id), {
         type: data.type,
         personName: data.personName,
         startDate: data.startDate,
@@ -839,8 +845,8 @@ async function saveTimeOffRequest(data){
         coverage: data.coverage,
         updatedAt: new Date().toISOString()
       });
-      }else{
-        const docRef = await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'timeOffRequests'), {
+    }else{
+      const docRef = await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'timeOffRequests'), {
         type: data.type,
         personName: data.personName,
         startDate: data.startDate,
@@ -850,12 +856,10 @@ async function saveTimeOffRequest(data){
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
-      }
+    }
   }catch(e){
     console.error('Error saving time-off request:', e);
-    console.error('Error code:', e.code);
-    console.error('Error message:', e.message);
-    alert(`Error saving time-off request: ${e.message}\n\nPlease check the browser console for more details.`);
+    alert(`Error saving time-off request: ${e.message}`);
   }
 }
 
@@ -922,24 +926,18 @@ function populatePersonSelect(){
 }
 
 function updateModalUI(){
-  // Update type buttons
   document.querySelectorAll('.type-btn').forEach(btn=>{
     btn.classList.toggle('selected', btn.dataset.type === state.modalState.type);
   });
   
-  // Update person select
   document.getElementById('modal-person').value = state.modalState.person;
-  
-  // Update dates
   document.getElementById('modal-start').value = state.modalState.startDate;
   document.getElementById('modal-end').value = state.modalState.endDate;
   
-  // Update coverage mode
   document.querySelectorAll('input[name="coverage-mode"]').forEach(radio=>{
     radio.checked = radio.value === state.modalState.coverageMode;
   });
   
-  // Update coverage suggestions
   updateCoverageSuggestions();
 }
 
@@ -956,7 +954,6 @@ function updateCoverageSuggestions(){
   const startDate = new Date(state.modalState.startDate);
   const endDate = new Date(state.modalState.endDate);
   
-  // Get dates in range
   const dates = [];
   let d = new Date(startDate);
   while(d <= endDate){
@@ -964,7 +961,6 @@ function updateCoverageSuggestions(){
     d.setDate(d.getDate() + 1);
   }
   
-  // Find available people for each date
   const availability = {};
   dates.forEach(date => {
     const dateStr = fmtDateISO(date);
@@ -974,7 +970,6 @@ function updateCoverageSuggestions(){
     availability[dateStr] = crew.filter(p => p.name !== state.modalState.person).map(p => p.name);
   });
   
-  // Count availability across all dates
   const counts = {};
   allPeople.forEach(p => counts[p] = 0);
   Object.values(availability).forEach(people => {
@@ -983,7 +978,6 @@ function updateCoverageSuggestions(){
     });
   });
   
-  // Sort by availability (most available first)
   const sorted = allPeople.sort((a,b) => counts[b] - counts[a]);
   
   sorted.forEach(name => {
@@ -1003,298 +997,544 @@ function updateCoverageSuggestions(){
   });
 }
 
-// Normalize any date value (string, Firestore Timestamp, JS Date) to YYYY-MM-DD
-function normalizeDate(date){
-  if(!date) return null;
-  if(typeof date === 'string') return date.trim().substring(0,10);
-  if(typeof date.toDate === 'function') return fmtDateISO(date.toDate()); // Firestore Timestamp
-  if(date instanceof Date) return fmtDateISO(date);
-  // Firestore Timestamp as plain object {seconds, nanoseconds}
-  if(typeof date.seconds === 'number') return fmtDateISO(new Date(date.seconds * 1000));
-  return null;
-}
+// --- Drag & Drop ---
+function setupDragDrop(){
+  document.addEventListener('dragstart', e => {
+    if(!e.target.classList.contains('chip')) return;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', e.target.dataset.name);
+  });
 
-// Check if a date string falls within a request's range, handling all formats
-function dateInRange(dateStr, req){
-  if(!req || !req.startDate || !req.endDate) return false;
-  const s = normalizeDate(req.startDate);
-  const e = normalizeDate(req.endDate);
-  if(!s || !e) return false;
-  return dateStr >= s && dateStr <= e;
-}
+  document.addEventListener('dragend', e => {
+    if(!e.target.classList.contains('chip')) return;
+    e.target.classList.remove('dragging');
+  });
 
-function getTimeOffForPerson(personName, dateStr){
-  return state.timeOffRequests.find(req =>
-    req.personName === personName && dateInRange(dateStr, req)
-  ) || null;
-}
-
-function getCoverageForPerson(personName, dateStr){
-  return state.timeOffRequests
-    .filter(req => dateInRange(dateStr, req) && req.coverage && req.coverage.includes(personName))
-    .map(req => req.personName);
-}
-
-function getCoverageForDate(dateStr){
-  const coverage = {};
-  state.timeOffRequests.filter(req => dateInRange(dateStr, req)).forEach(req => {
-    (req.coverage || []).forEach(coverPerson => {
-      if(!coverage[coverPerson]) coverage[coverPerson] = [];
-      coverage[coverPerson].push(req.personName);
+  document.querySelectorAll('.drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => {
+      zone.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      const name = e.dataTransfer.getData('text/plain');
+      const targetHalf = zone.dataset.half;
+      movePerson(name, targetHalf);
     });
   });
-  return coverage;
 }
 
-// --- Time Off List Tab ---
-function renderTimeOffList(){
-  const list = document.getElementById('timeoff-list');
-  list.innerHTML = '';
+function movePerson(name, targetHalf){
+  const currentHalf = state.fh.includes(name) ? 'fh' : 'bh';
+  if(currentHalf === targetHalf) return;
   
-  if(state.timeOffRequests.length === 0){
-    list.innerHTML = '<div class="empty-timeoff">No time-off requests yet. Click "+ Add Time Off" to add one.</div>';
+  state.fh = state.fh.filter(p => p !== name);
+  state.bh = state.bh.filter(p => p !== name);
+  
+  if(targetHalf === 'fh') state.fh.push(name);
+  else state.bh.push(name);
+  
+  renderZones();
+  renderTable();
+  renderCrewGrid();
+  renderCalendar();
+}
+
+function renderZones(){
+  const fhZone = document.getElementById('zone-fh');
+  const bhZone = document.getElementById('zone-bh');
+  fhZone.innerHTML = '';
+  bhZone.innerHTML = '';
+  
+  state.fh.forEach((name, idx) => {
+    fhZone.appendChild(createChip(name, idx, 'fh'));
+  });
+  state.bh.forEach((name, idx) => {
+    bhZone.appendChild(createChip(name, idx, 'bh'));
+  });
+}
+
+function createChip(name, posIdx, half){
+  const role = getRoleForOp(posIdx, 0);
+  const chip = document.createElement('div');
+  chip.className = `chip ${half}-chip`;
+  chip.dataset.name = name;
+  chip.draggable = true;
+  chip.innerHTML = `
+    <span class="chip-pos">${posIdx + 1}</span>
+    <span class="chip-name">${name}</span>
+    <span class="chip-role role-${role}">${role}</span>
+  `;
+  return chip;
+}
+
+function getCrewForDay(weekIdx, dayOfWeek){
+  const crew = [];
+  
+  // Determine which halves are working
+  const fhWorking = dayOfWeek <= 2 || (dayOfWeek === 3 && hasWed('fh', weekIdx));
+  const bhWorking = dayOfWeek >= 4 || (dayOfWeek === 3 && hasWed('bh', weekIdx));
+  
+  if(fhWorking){
+    state.fh.forEach((name, idx) => {
+      const role = getRoleForOp(idx, weekIdx);
+      crew.push({ name, half: 'fh', role });
+    });
+  }
+  
+  if(bhWorking){
+    state.bh.forEach((name, idx) => {
+      const role = getRoleForOp(idx, weekIdx);
+      crew.push({ name, half: 'bh', role });
+    });
+  }
+  
+  return crew;
+}
+
+function renderTable(){
+  const tbody = document.getElementById('sched-body');
+  tbody.innerHTML = '';
+  
+  const opSelect = document.getElementById('op-select');
+  const selectedOp = opSelect.value || '';
+  
+  if(!selectedOp){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-muted);">Select an operator to view their schedule</td></tr>';
     return;
   }
   
-  // Sort by start date
-  const sorted = [...state.timeOffRequests].sort((a,b) => new Date(a.startDate) - new Date(b.startDate));
+  for(let w = 0; w < TOTAL_WEEKS; w++){
+    const weekStart = getWeekStart(w);
+    const row = document.createElement('tr');
+    if(w % 2 === 1) row.classList.add('alt');
+    
+    row.innerHTML = `<td class="wk-lbl">W${w+1}</td><td class="date-lbl">${getWeekDates(w)}</td>`;
+    
+    for(let d = 0; d < 7; d++){
+      const date = new Date(weekStart);
+      date.setDate(date.getDate() + d);
+      const dateISO = fmtDateISO(date);
+      
+      const dayOfWeek = date.getDay();
+      const crew = getCrewForDay(w, dayOfWeek);
+      
+      // NEW: Check if selectedOp is on time-off
+      const timeOff = getTimeOffOnDate(selectedOp, dateISO);
+      
+      // Find the operator in the crew
+      const opInCrew = crew.find(p => p.name === selectedOp);
+      
+      const td = document.createElement('td');
+      td.classList.add('clickable');
+      
+      if(timeOff){
+        // Show as OFF with coverage
+        td.innerHTML = `<span class="rbadge off">Off</span>`;
+        const coverage = getCoverageForDate(selectedOp, dateISO);
+        if(coverage && coverage.length > 0){
+          td.innerHTML += `<div class="coverage-text">Cover: <strong>${coverage.join(', ')}</strong></div>`;
+        }
+      }else if(opInCrew){
+        const role = opInCrew.role;
+        td.innerHTML = `<span class="rbadge ${ROLE_CLS[role]}">${role}</span>`;
+      }else{
+        td.innerHTML = `<span class="rbadge off">off</span>`;
+      }
+      
+      td.onclick = () => openModal(selectedOp, dateISO);
+      row.appendChild(td);
+    }
+    tbody.appendChild(row);
+  }
+}
+
+function renderCrewGrid(){
+  const grid = document.getElementById('crew-grid');
+  grid.innerHTML = '';
   
-  const icons = {vacation:'🏖️',sick:'🤒',personal:'📅'};
-  
-  sorted.forEach(req => {
-    const item = document.createElement('div');
-    item.className = 'timeoff-item';
+  for(let w = 0; w < TOTAL_WEEKS; w++){
+    const week = document.createElement('div');
+    week.className = 'crew-week';
     
-    const startDate = new Date(req.startDate);
-    const endDate = new Date(req.endDate);
-    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    const weekStart = getWeekStart(w);
+    const fhCrew = [];
+    const bhCrew = [];
     
-    const coverageHTML = req.coverage && req.coverage.length > 0
-      ? `<div class="to-item-coverage">Coverage: <strong>${req.coverage.join(', ')}</strong></div>`
-      : '<div class="to-item-coverage">No coverage assigned</div>';
+    for(let d = 0; d < 7; d++){
+      const date = new Date(weekStart);
+      date.setDate(date.getDate() + d);
+      const dayOfWeek = date.getDay();
+      const crew = getCrewForDay(w, dayOfWeek);
+      
+      crew.forEach(p => {
+        if(p.half === 'fh' && !fhCrew.includes(p.name)) fhCrew.push(p.name);
+        if(p.half === 'bh' && !bhCrew.includes(p.name)) bhCrew.push(p.name);
+      });
+    }
     
-    item.innerHTML = `
-      <div class="to-item-type ${req.type}">${icons[req.type]}</div>
-      <div class="to-item-details">
-        <div class="to-item-person">${req.personName}</div>
-        <div class="to-item-dates">${fmtDate(startDate)} – ${fmtDate(endDate)} (${days} day${days !== 1 ? 's' : ''})</div>
-        ${coverageHTML}
-      </div>
-      <div class="to-item-actions">
-        <button class="to-item-btn edit" data-id="${req.id}">Edit</button>
-        <button class="to-item-btn delete" data-id="${req.id}">Delete</button>
-      </div>
+    const header = document.createElement('div');
+    header.className = 'crew-week-header';
+    header.onclick = () => week.classList.toggle('open');
+    
+    const fhBadges = fhCrew.length > 0 ? `<span class="wk-half-label fh-lbl">FH</span><span class="sum-badge sum-d1">${fhCrew.length}</span>` : '';
+    const bhBadges = bhCrew.length > 0 ? `<span class="wk-half-label bh-lbl">BH</span><span class="sum-badge sum-d1">${bhCrew.length}</span>` : '';
+    
+    header.innerHTML = `
+      <div class="wk-num">W${w+1}</div>
+      <div class="wk-dates">${getWeekDates(w)}</div>
+      <div class="wk-half">${fhBadges}</div>
+      <div class="wk-half">${bhBadges}</div>
+      <div class="chevron">▼</div>
     `;
+    week.appendChild(header);
     
-    // Add click handlers
-    item.querySelector('.edit').addEventListener('click', () => {
-      openModal(req.personName, req.startDate, req);
+    const days = document.createElement('div');
+    days.className = 'crew-days';
+    
+    for(let d = 0; d < 7; d++){
+      const date = new Date(weekStart);
+      date.setDate(date.getDate() + d);
+      const dateISO = fmtDateISO(date);
+      const dayOfWeek = date.getDay();
+      const crew = getCrewForDay(w, dayOfWeek);
+      
+      const dayEl = document.createElement('div');
+      dayEl.className = 'crew-day';
+      
+      const label = document.createElement('div');
+      label.className = 'crew-day-label';
+      label.innerHTML = `<div class="day-name">${DAY_NAMES[dayOfWeek]}</div><div class="day-date">${fmtDate(date)}</div>`;
+      dayEl.appendChild(label);
+      
+      const slots = document.createElement('div');
+      slots.className = 'crew-day-slots';
+      
+      crew.forEach(p => {
+        // NEW: Check if person is on time-off
+        const timeOff = getTimeOffOnDate(p.name, dateISO);
+        if(timeOff) return; // Skip the off-duty person
+      });
+      
+      if(crew.length === 0){
+        slots.innerHTML = '<span class="no-crew">No crew</span>';
+      }else{
+        crew.forEach(p => {
+          const timeOff = getTimeOffOnDate(p.name, dateISO);
+          if(timeOff){
+            // Show coverage instead
+            const coverage = getCoverageForDate(p.name, dateISO);
+            if(coverage && coverage.length > 0){
+              coverage.forEach(covName => {
+                const slot = document.createElement('div');
+                slot.className = 'person-slot ps-d1';
+                slot.innerHTML = `
+                  <span class="ps-name">${covName}</span>
+                  <span class="ps-role">Cover</span>
+                `;
+                slots.appendChild(slot);
+              });
+            }
+          }else{
+            const slot = document.createElement('div');
+            slot.className = `person-slot ps-${ROLE_CLS[p.role]}`;
+            slot.innerHTML = `
+              <span class="ps-name">${p.name}</span>
+              <span class="ps-role">${p.role}</span>
+            `;
+            slots.appendChild(slot);
+          }
+        });
+      }
+      
+      dayEl.appendChild(slots);
+      days.appendChild(dayEl);
+    }
+    
+    week.appendChild(days);
+    grid.appendChild(week);
+  }
+}
+
+function renderCalendar(){
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+  
+  const m = state.calendar.currentMonth;
+  const y = state.calendar.currentYear;
+  
+  const firstDay = new Date(y, m, 1);
+  const lastDay = new Date(y, m + 1, 0);
+  const startDate = new Date(firstDay);
+  startDate.setDate(startDate.getDate() - firstDay.getDay());
+  
+  const monthLabel = document.getElementById('cal-month-label');
+  monthLabel.textContent = new Date(y, m, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  
+  for(let i = 0; i < 7; i++){
+    const header = document.createElement('div');
+    header.className = 'cal-header';
+    header.textContent = DAY_NAMES[i];
+    grid.appendChild(header);
+  }
+  
+  let d = new Date(startDate);
+  while(d <= lastDay){
+    const dayEl = document.createElement('div');
+    dayEl.className = 'cal-day';
+    
+    if(d.getMonth() !== m) dayEl.classList.add('other-month');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    d.setHours(0,0,0,0);
+    if(d.getTime() === today.getTime()) dayEl.classList.add('today');
+    
+    const dayNum = document.createElement('div');
+    dayNum.className = 'cal-day-number';
+    dayNum.textContent = d.getDate();
+    dayEl.appendChild(dayNum);
+    
+    const events = document.createElement('div');
+    events.className = 'cal-day-events';
+    
+    const dateISO = fmtDateISO(d);
+    const weekIdx = Math.floor((d - START) / (7 * 24 * 60 * 60 * 1000));
+    const dayOfWeek = d.getDay();
+    const crew = getCrewForDay(weekIdx, dayOfWeek);
+    
+    crew.forEach(p => {
+      const timeOff = getTimeOffOnDate(p.name, dateISO);
+      if(timeOff) return;
+      
+      const ev = document.createElement('div');
+      ev.className = `cal-event working`;
+      ev.textContent = `${p.name} ${p.role}`;
+      events.appendChild(ev);
     });
     
-    item.querySelector('.delete').addEventListener('click', async () => {
-      if(confirm(`Delete time-off request for ${req.personName}?`)){
-        await deleteTimeOffRequest(req.id);
+    // NEW: Show time-off badges
+    state.timeOffRequests.forEach(req => {
+      if(req.startDate <= dateISO && req.endDate >= dateISO){
+        const ev = document.createElement('div');
+        ev.className = `cal-event ${req.type}`;
+        ev.textContent = `${req.personName} ${req.type}`;
+        events.appendChild(ev);
       }
     });
     
+    dayEl.appendChild(events);
+    
+    dayEl.onclick = () => {
+      document.querySelectorAll('.cal-day.selected').forEach(d => d.classList.remove('selected'));
+      dayEl.classList.add('selected');
+      renderDayPanel(d);
+    };
+    
+    grid.appendChild(dayEl);
+    d.setDate(d.getDate() + 1);
+  }
+}
+
+function renderDayPanel(date){
+  const panel = document.getElementById('day-panel');
+  const dateISO = fmtDateISO(date);
+  const weekIdx = Math.floor((date - START) / (7 * 24 * 60 * 60 * 1000));
+  const dayOfWeek = date.getDay();
+  const crew = getCrewForDay(weekIdx, dayOfWeek);
+  
+  let html = `
+    <div class="day-panel-date">${DAY_NAMES[dayOfWeek]}</div>
+    <div class="day-panel-sub">${date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+  `;
+  
+  const working = [];
+  const offDuty = [];
+  
+  crew.forEach(p => {
+    const timeOff = getTimeOffOnDate(p.name, dateISO);
+    if(timeOff){
+      offDuty.push({ name: p.name, timeOff, coverage: getCoverageForDate(p.name, dateISO) });
+    }else{
+      working.push(p);
+    }
+  });
+  
+  if(working.length > 0){
+    html += '<div class="day-panel-section-label">Working</div>';
+    working.forEach(p => {
+      const roleClass = ROLE_CLS[p.role];
+      html += `
+        <div class="day-panel-person dp-working">
+          <div class="dp-name">${p.name}</div>
+          <div class="dp-role role-${roleClass}">${p.role}</div>
+        </div>
+      `;
+    });
+  }
+  
+  if(offDuty.length > 0){
+    html += '<div class="day-panel-section-label">Off Duty</div>';
+    offDuty.forEach(item => {
+      html += `
+        <div class="day-panel-person dp-off">
+          <div class="dp-name">${item.name} <span style="font-size:10px;opacity:0.7;">(${item.timeOff.type})</span></div>
+        </div>
+      `;
+      if(item.coverage && item.coverage.length > 0){
+        html += `<div class="day-panel-person dp-covering">
+          <div class="dp-name">Coverage: ${item.coverage.join(', ')}</div>
+          <div class="dp-cover-label">Covering</div>
+        </div>`;
+      }
+    });
+  }
+  
+  html += `<button class="day-panel-add-btn" onclick="openModal('', '${dateISO}')">+ Add Time Off</button>`;
+  
+  panel.innerHTML = html;
+}
+
+function renderTimeOffList(){
+  const list = document.getElementById('timeoff-list');
+  
+  if(state.timeOffRequests.length === 0){
+    list.innerHTML = '<div class="empty-timeoff">No time-off requests yet</div>';
+    return;
+  }
+  
+  list.innerHTML = '';
+  state.timeOffRequests.forEach(req => {
+    const item = document.createElement('div');
+    item.className = 'timeoff-item';
+    
+    const typeIcon = req.type === 'vacation' ? '🏖️' : req.type === 'sick' ? '🤒' : '📅';
+    
+    const coverage = req.coverage && req.coverage.length > 0 ? `<strong>${req.coverage.join(', ')}</strong>` : 'None assigned';
+    
+    item.innerHTML = `
+      <div class="to-item-type ${req.type}">${typeIcon}</div>
+      <div class="to-item-details">
+        <div class="to-item-person">${req.personName}</div>
+        <div class="to-item-dates">${req.startDate} to ${req.endDate}</div>
+        <div class="to-item-coverage">Coverage: ${coverage}</div>
+      </div>
+      <div class="to-item-actions">
+        <button class="to-item-btn edit" onclick="openModal('${req.personName}', '${req.startDate}', state.timeOffRequests.find(r => r.id === '${req.id}'))">Edit</button>
+        <button class="to-item-btn delete" onclick="deleteTimeOffRequest('${req.id}')">Delete</button>
+      </div>
+    `;
     list.appendChild(item);
   });
 }
+
+// --- Event Listeners ---
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    if(tab === 'crew') renderCrewGrid();
+    if(tab === 'calendar') renderCalendar();
+    if(tab === 'timeoff') renderTimeOffList();
+  });
+});
+
+document.getElementById('op-select').addEventListener('change', renderTable);
+
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.modalState.type = btn.dataset.type;
+    updateModalUI();
+  });
+});
+
+document.getElementById('modal-person').addEventListener('change', e => {
+  state.modalState.person = e.target.value;
+  updateCoverageSuggestions();
+});
+
+document.getElementById('modal-start').addEventListener('change', e => {
+  state.modalState.startDate = e.target.value;
+  updateCoverageSuggestions();
+});
+
+document.getElementById('modal-end').addEventListener('change', e => {
+  state.modalState.endDate = e.target.value;
+  updateCoverageSuggestions();
+});
+
+document.querySelectorAll('input[name="coverage-mode"]').forEach(radio => {
+  radio.addEventListener('change', e => {
+    state.modalState.coverageMode = e.target.value;
+    updateCoverageSuggestions();
+  });
+});
+
+document.getElementById('modal-cancel').addEventListener('click', closeModal);
+
+document.getElementById('modal-delete').addEventListener('click', async () => {
+  if(state.modalState.editingId){
+    await deleteTimeOffRequest(state.modalState.editingId);
+    closeModal();
+  }
+});
+
+document.getElementById('modal-save').addEventListener('click', async () => {
+  if(!state.modalState.person || !state.modalState.startDate || !state.modalState.endDate){
+    alert('Please fill in all fields');
+    return;
+  }
+  
+  await saveTimeOffRequest({
+    id: state.modalState.editingId,
+    type: state.modalState.type,
+    personName: state.modalState.person,
+    startDate: state.modalState.startDate,
+    endDate: state.modalState.endDate,
+    coverage: state.modalState.coverage
+  });
+  closeModal();
+});
 
 document.getElementById('add-timeoff-btn').addEventListener('click', () => {
   openModal('', fmtDateISO(new Date()));
 });
 
-// --- Calendar Tab ---
-let calSelectedDate = null;
+document.getElementById('expand-all').addEventListener('click', () => {
+  document.querySelectorAll('.crew-week').forEach(w => w.classList.add('open'));
+});
 
-const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const DAY_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+document.getElementById('collapse-all').addEventListener('click', () => {
+  document.querySelectorAll('.crew-week').forEach(w => w.classList.remove('open'));
+});
 
-function fmtDatePretty(dateStr){
-  const d = new Date(dateStr + 'T12:00:00');
-  return `${DAY_FULL[d.getDay()]}, ${MONTH_NAMES[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
-}
-
-function renderCalendar(){
-  const grid = document.getElementById('calendar-grid');
-  const monthLabel = document.getElementById('cal-month-label');
-  grid.innerHTML = '';
-
-  const month = state.calendar.currentMonth;
-  const year = state.calendar.currentYear;
-  monthLabel.textContent = `${MONTH_NAMES[month]} ${year}`;
-
-  const dayHeaders = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  dayHeaders.forEach(day => {
-    const header = document.createElement('div');
-    header.className = 'cal-header';
-    header.textContent = day;
-    grid.appendChild(header);
-  });
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const daysInPrevMonth = new Date(year, month, 0).getDate();
-  const today = new Date();
-  const todayStr = fmtDateISO(today);
-
-  // Leading empty cells
-  for(let i = firstDay - 1; i >= 0; i--){
-    const dayEl = document.createElement('div');
-    dayEl.className = 'cal-day other-month';
-    dayEl.innerHTML = `<div class="cal-day-number">${daysInPrevMonth - i}</div>`;
-    grid.appendChild(dayEl);
-  }
-
-  for(let day = 1; day <= daysInMonth; day++){
-    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const dateObj = new Date(dateStr + 'T12:00:00');
-    const weekIdx = Math.floor((dateObj - START) / (7*24*60*60*1000));
-    const dayOfWeek = dateObj.getDay();
-
-    const dayEl = document.createElement('div');
-    let cls = 'cal-day';
-    if(dateStr === todayStr) cls += ' today';
-    if(dateStr === calSelectedDate) cls += ' selected';
-    dayEl.className = cls;
-
-    const numDiv = document.createElement('div');
-    numDiv.className = 'cal-day-number';
-    numDiv.textContent = day;
-    dayEl.appendChild(numDiv);
-
-    const eventsDiv = document.createElement('div');
-    eventsDiv.className = 'cal-day-events';
-
+document.getElementById('jump-input').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){
+    const val = e.target.value;
+    let weekIdx = 0;
+    if(val.includes('/')){
+      const [m, w] = val.split('/');
+      weekIdx = (parseInt(m) - 1) * 4 + parseInt(w) - 1;
+    }else{
+      weekIdx = parseInt(val) - 1;
+    }
+    
     if(weekIdx >= 0 && weekIdx < TOTAL_WEEKS){
-      const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-      const offToday = state.timeOffRequests.filter(r => dateInRange(dateStr, r));
-
-      // Show first 3 people, then +N more
-      const MAX_SHOW = 3;
-      effectiveCrew.slice(0, MAX_SHOW).forEach(p => {
-        const ev = document.createElement('div');
-        if(p.covering){
-          ev.className = 'cal-event covering';
-          ev.textContent = `${p.name} ↔${p.coveringFor}`;
-        } else {
-          ev.className = 'cal-event working';
-          ev.textContent = `${p.name} ${p.role}`;
-        }
-        eventsDiv.appendChild(ev);
-      });
-      if(effectiveCrew.length > MAX_SHOW){
-        const more = document.createElement('div');
-        more.className = 'cal-more';
-        more.textContent = `+${effectiveCrew.length - MAX_SHOW} more`;
-        eventsDiv.appendChild(more);
+      const week = document.querySelectorAll('.crew-week')[weekIdx];
+      if(week){
+        week.classList.add('open');
+        week.scrollIntoView({ behavior: 'smooth' });
       }
-      // Time-off with no cover shown faintly
-      offToday.filter(r => !r.coverage || r.coverage.length === 0).forEach(r => {
-        const icons = {vacation:'🏖',sick:'🤒',personal:'📅'};
-        const ev = document.createElement('div');
-        ev.className = `cal-event ${r.type}`;
-        ev.textContent = `${icons[r.type]} ${r.personName}`;
-        eventsDiv.appendChild(ev);
-      });
     }
-
-    dayEl.appendChild(eventsDiv);
-
-    dayEl.addEventListener('click', () => {
-      calSelectedDate = dateStr;
-      renderCalendar();       // re-render to move selected highlight
-      renderDayPanel(dateStr);
-    });
-
-    grid.appendChild(dayEl);
   }
-
-  // Trailing cells
-  const totalCells = firstDay + daysInMonth;
-  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
-  for(let day = 1; day <= remaining; day++){
-    const dayEl = document.createElement('div');
-    dayEl.className = 'cal-day other-month';
-    dayEl.innerHTML = `<div class="cal-day-number">${day}</div>`;
-    grid.appendChild(dayEl);
-  }
-
-  // Re-render panel if a date is selected
-  if(calSelectedDate) renderDayPanel(calSelectedDate);
-}
-
-function renderDayPanel(dateStr){
-  const panel = document.getElementById('day-panel');
-  const dateObj = new Date(dateStr + 'T12:00:00');
-  const weekIdx = Math.floor((dateObj - START) / (7*24*60*60*1000));
-  const dayOfWeek = dateObj.getDay();
-
-  if(weekIdx < 0 || weekIdx >= TOTAL_WEEKS){
-    panel.innerHTML = `<div class="day-panel-date">${fmtDatePretty(dateStr)}</div><div class="day-panel-sub">Outside schedule range</div>`;
-    return;
-  }
-
-  const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-  const offToday = state.timeOffRequests.filter(r => dateInRange(dateStr, r));
-  const icons = {vacation:'🏖️',sick:'🤒',personal:'📅'};
-
-  // Split into day and night
-  const dayShift = effectiveCrew.filter(p => p.role==='D1'||p.role==='D2'||p.role==='D3');
-  const nightShift = effectiveCrew.filter(p => p.role==='N1'||p.role==='N2');
-
-  let html = `
-    <div class="day-panel-date">${fmtDatePretty(dateStr)}</div>
-    <div class="day-panel-sub">Week ${weekIdx+1} &middot; ${DAY_FULL[dayOfWeek]}</div>
-  `;
-
-  function personCard(p){
-    if(p.covering){
-      return `<div class="day-panel-person dp-covering">
-        <span class="dp-name">${p.name}</span>
-        <span class="dp-role" style="background:var(--d${p.role[1]}-bg||#eee);color:var(--d${p.role[1]}-fg||#333)">${p.role}</span>
-        <span class="dp-cover-label">covering ${p.coveringFor}</span>
-      </div>`;
-    }
-    return `<div class="day-panel-person dp-working">
-      <span class="dp-name">${p.name}</span>
-      <span class="dp-role rbadge ${ROLE_CLS[p.role]}">${p.role}</span>
-    </div>`;
-  }
-
-  if(dayShift.length > 0){
-    html += `<div class="day-panel-section-label">Day shift &middot; 6am–6pm</div>`;
-    html += dayShift.map(personCard).join('');
-  }
-  if(nightShift.length > 0){
-    html += `<div class="day-panel-section-label">Night shift &middot; 6pm–6am</div>`;
-    html += nightShift.map(personCard).join('');
-  }
-  if(effectiveCrew.length === 0){
-    html += `<div style="font-size:13px;color:var(--text-muted);padding:8px 0;">No crew scheduled</div>`;
-  }
-
-  // Off with no cover
-  const uncovered = offToday.filter(r => !r.coverage || r.coverage.length === 0);
-  if(uncovered.length > 0){
-    html += `<div class="day-panel-section-label" style="color:#dc2626;">Off — no cover</div>`;
-    uncovered.forEach(r => {
-      html += `<div class="day-panel-person dp-off">
-        <span class="dp-name">${r.personName}</span>
-        <span style="font-size:12px;">${icons[r.type]} ${r.type}</span>
-      </div>`;
-    });
-  }
-
-  html += `<button class="day-panel-add-btn" id="day-panel-add-btn">+ Add time off for this day</button>`;
-
-  panel.innerHTML = html;
-
-  document.getElementById('day-panel-add-btn').addEventListener('click', () => {
-    openModal('', dateStr);
-  });
-}
+});
 
 document.getElementById('cal-prev-month').addEventListener('click', () => {
   state.calendar.currentMonth--;
@@ -1315,456 +1555,28 @@ document.getElementById('cal-next-month').addEventListener('click', () => {
 });
 
 document.getElementById('cal-today').addEventListener('click', () => {
-  state.calendar.currentMonth = new Date().getMonth();
-  state.calendar.currentYear = new Date().getFullYear();
+  const today = new Date();
+  state.calendar.currentMonth = today.getMonth();
+  state.calendar.currentYear = today.getFullYear();
   renderCalendar();
 });
 
-// --- Modal Event Listeners ---
-document.querySelectorAll('.type-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    state.modalState.type = btn.dataset.type;
-    updateModalUI();
-  });
+// --- Init ---
+setupDragDrop();
+renderZones();
+
+// Populate op-select
+const opSelect = document.getElementById('op-select');
+[...state.fh, ...state.bh].forEach(name => {
+  const opt = document.createElement('option');
+  opt.value = name;
+  opt.textContent = name;
+  opSelect.appendChild(opt);
 });
 
-document.getElementById('modal-person').addEventListener('change', e=>{
-  state.modalState.person = e.target.value;
-  updateCoverageSuggestions();
-});
+// Initialize Firestore
+initFirestoreListener();
 
-document.getElementById('modal-start').addEventListener('change', e=>{
-  state.modalState.startDate = e.target.value;
-  updateCoverageSuggestions();
-});
-
-document.getElementById('modal-end').addEventListener('change', e=>{
-  state.modalState.endDate = e.target.value;
-  updateCoverageSuggestions();
-});
-
-document.querySelectorAll('input[name="coverage-mode"]').forEach(radio=>{
-  radio.addEventListener('change', e=>{
-    state.modalState.coverageMode = e.target.value;
-    updateCoverageSuggestions();
-  });
-});
-
-document.getElementById('modal-cancel').addEventListener('click', closeModal);
-
-document.getElementById('modal-save').addEventListener('click', async ()=>{
-  if(!state.modalState.person){
-    alert('Please select a person');
-    return;
-  }
-  if(!state.modalState.startDate || !state.modalState.endDate){
-    alert('Please select start and end dates');
-    return;
-  }
-  
-  const data = {
-    id: state.modalState.editingId,
-    type: state.modalState.type,
-    personName: state.modalState.person,
-    startDate: state.modalState.startDate,
-    endDate: state.modalState.endDate,
-    coverage: state.modalState.coverageMode === 'none' ? [] : state.modalState.coverage
-  };
-  
-  await saveTimeOffRequest(data);
-  closeModal();
-});
-
-document.getElementById('modal-delete').addEventListener('click', async ()=>{
-  if(state.modalState.editingId && confirm('Delete this time-off request?')){
-    await deleteTimeOffRequest(state.modalState.editingId);
-    closeModal();
-  }
-});
-
-document.getElementById('timeoff-modal').addEventListener('click', e=>{
-  if(e.target.id === 'timeoff-modal') closeModal();
-});
-
-
-// Returns base scheduled crew for a day (ignores time-off/coverage)
-// dayOfWeek: 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-function getCrewForDay(weekIdx, dayOfWeek){
-  const crew = [];
-  state.fh.forEach((name, posIdx)=>{
-    const worksToday =
-      dayOfWeek === 0 || dayOfWeek === 1 || dayOfWeek === 2 ||
-      (dayOfWeek === 3 && hasWed('fh', weekIdx));
-    if(worksToday){
-      crew.push({name, role: getRoleForOp(posIdx, weekIdx), half:'fh', covering: false, coveringFor: null});
-    }
-  });
-  state.bh.forEach((name, posIdx)=>{
-    const worksToday =
-      dayOfWeek === 4 || dayOfWeek === 5 || dayOfWeek === 6 ||
-      (dayOfWeek === 3 && hasWed('bh', weekIdx));
-    if(worksToday){
-      crew.push({name, role: getRoleForOp(posIdx, weekIdx), half:'bh', covering: false, coveringFor: null});
-    }
-  });
-  const roleOrder = {D1:0,D2:1,D3:2,N1:3,N2:4};
-  crew.sort((a,b)=> roleOrder[a.role]-roleOrder[b.role]);
-  return crew;
-}
-
-// Returns the EFFECTIVE crew for a day: removes people on time-off,
-// replaces/adds their cover people working that day.
-function getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr){
-  const base = getCrewForDay(weekIdx, dayOfWeek);
-  const result = [];
-
-  base.forEach(person => {
-    const req = state.timeOffRequests.find(r =>
-      r.personName === person.name && dateInRange(dateStr, r)
-    );
-    if(req){
-      // Person is off — inject their cover person(s) in their role
-      (req.coverage || []).forEach(coverName => {
-        result.push({
-          name: coverName,
-          role: person.role,
-          half: person.half,
-          covering: true,
-          coveringFor: person.name,
-          originalOff: req.type
-        });
-      });
-      // Absent person not added — they're off
-    } else {
-      result.push(person);
-    }
-  });
-
-  const roleOrder = {D1:0,D2:1,D3:2,N1:3,N2:4};
-  result.sort((a,b)=> roleOrder[a.role]-roleOrder[b.role]);
-  return result;
-}
-
-// For a given person on a given date: are they working an EXTRA day (covering someone)?
-// Returns array of {personName, role, type} they are covering, if any, even on their scheduled off days
-function getCoverageExtraShifts(personName, dateStr){
-  const extras = [];
-  state.timeOffRequests
-    .filter(req => dateInRange(dateStr, req) && req.coverage && req.coverage.includes(personName))
-    .forEach(req => {
-      const dateObj = new Date(dateStr + 'T12:00:00');
-      const weekIdx = Math.floor((dateObj - START) / (7 * 24 * 60 * 60 * 1000));
-      const half = state.fh.includes(req.personName) ? 'fh' : 'bh';
-      const posIdx = state[half].indexOf(req.personName);
-      const role = posIdx >= 0 ? getRoleForOp(posIdx, weekIdx) : '?';
-      extras.push({ coveringFor: req.personName, role, type: req.type });
-    });
-  return extras;
-}
-
-// --- Drag & drop ---
-let dragging=null, dragSourceHalf=null, dragOverChip=null;
-
-function renderChips(){
-  ['fh','bh'].forEach(half=>{
-    const zone = document.getElementById(`zone-${half}`);
-    zone.innerHTML='';
-    state[half].forEach((name,idx)=>{
-      const role = ROLES[idx%5];
-      const chip = document.createElement('div');
-      chip.className=`chip ${half}-chip`;
-      chip.draggable=true;
-      chip.dataset.name=name; chip.dataset.half=half;
-      chip.innerHTML=`<span class="chip-pos">${idx+1}</span><span class="chip-name">${name}</span><span class="chip-role role-${ROLE_CLS[role]}">${role}</span>`;
-      chip.addEventListener('dragstart',e=>{
-        dragging=name; dragSourceHalf=half;
-        setTimeout(()=>chip.classList.add('dragging'),0);
-        e.dataTransfer.effectAllowed='move';
-      });
-      chip.addEventListener('dragend',()=>{
-        chip.classList.remove('dragging');
-        dragging=null; dragSourceHalf=null; dragOverChip=null;
-        document.querySelectorAll('.drop-zone').forEach(z=>z.classList.remove('drag-over'));
-        renderChips();
-      });
-      chip.addEventListener('dragover',e=>{ e.preventDefault(); dragOverChip={name,half}; });
-      zone.appendChild(chip);
-    });
-    zone.addEventListener('dragover',e=>{ e.preventDefault(); zone.classList.add('drag-over'); });
-    zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
-    zone.addEventListener('drop',e=>{
-      e.preventDefault(); zone.classList.remove('drag-over');
-      if(!dragging) return;
-      state.fh=state.fh.filter(n=>n!==dragging);
-      state.bh=state.bh.filter(n=>n!==dragging);
-      const arr=state[half];
-      if(dragOverChip && dragOverChip.half===half && dragOverChip.name!==dragging){
-        const at=arr.indexOf(dragOverChip.name);
-        if(at>=0) arr.splice(at,0,dragging); else arr.push(dragging);
-      } else { arr.push(dragging); }
-      dragOverChip=null;
-      renderChips(); updateSelect(); renderCrewGrid();
-    });
-  });
-  updateSelect();
-  renderCrewGrid();
-}
-
-// --- Individual tab ---
-function updateSelect(){
-  const sel=document.getElementById('op-select');
-  const cur=state.selected;
-  sel.innerHTML='<option value="">— pick an operator —</option>';
-  [...state.fh,...state.bh].forEach(n=>{
-    const o=document.createElement('option');
-    o.value=n; o.textContent=n;
-    if(n===cur) o.selected=true;
-    sel.appendChild(o);
-  });
-  renderTable();
-}
-document.getElementById('op-select').addEventListener('change',e=>{ state.selected=e.target.value; renderTable(); });
-
-function renderTable(){
-  const sel=state.selected;
-  const tbody=document.getElementById('sched-body');
-  tbody.innerHTML='';
-  if(!sel){
-    tbody.innerHTML=`<tr><td colspan="9" class="empty-state">Pick an operator above to see their full 52-week schedule.</td></tr>`;
-    return;
-  }
-
-  const half=state.fh.includes(sel)?'fh':'bh';
-  const posIdx=state[half].indexOf(sel);
-  const off=`<span class="rbadge off">off</span>`;
-  const icons={vacation:'🏖️',sick:'🤒',personal:'📅'};
-
-  for(let w=0;w<TOTAL_WEEKS;w++){
-    const tr=document.createElement('tr');
-    if(w%2===1) tr.classList.add('alt');
-    const role=getRoleForOp(posIdx,w);
-    const rc=ROLE_CLS[role];
-    const rb=`<span class="rbadge ${rc}">${role}</span>`;
-    const wedOn=hasWed(half,w);
-
-    // Base schedule: which days are scheduled (true) vs off (false)
-    const weekStart=getWeekStart(w);
-    const baseDays = [0,1,2,3,4,5,6].map(dayIdx => {
-      if(half==='fh') return dayIdx===0||dayIdx===1||dayIdx===2||(dayIdx===3&&wedOn);
-      else return dayIdx===4||dayIdx===5||dayIdx===6||(dayIdx===3&&wedOn);
-    });
-
-    const dayCells=[0,1,2,3,4,5,6].map(dayIdx=>{
-      const dayDate=addDays(weekStart, dayIdx);
-      const dateStr=fmtDateISO(dayDate);
-      const isScheduled=baseDays[dayIdx];
-      const timeOff=getTimeOffForPerson(sel, dateStr);
-      const extraShifts=getCoverageExtraShifts(sel, dateStr);
-      let cellContent;
-      let cellClass='clickable';
-
-      if(timeOff){
-        // Person is on time-off this day
-        cellContent=`<span class="to-badge ${timeOff.type}"><span class="icon">${icons[timeOff.type]}</span>${timeOff.type}</span>`;
-      } else if(isScheduled){
-        // Normal working day — check if also covering someone
-        if(extraShifts.length > 0){
-          const coverLabels=extraShifts.map(e=>`<span class="rbadge" style="background:var(--green-light);color:var(--green-dark);margin-top:2px;display:block;">${e.role} covering ${e.coveringFor}</span>`).join('');
-          cellContent=`${rb}${coverLabels}`;
-        } else {
-          cellContent=rb;
-        }
-      } else if(extraShifts.length > 0){
-        // Normally off BUT covering someone — show as a working day
-        const coverLabels=extraShifts.map(e=>`<span class="rbadge" style="background:var(--green-light);color:var(--green-dark);">${e.role} covering ${e.coveringFor}</span>`).join('');
-        cellContent=`<div style="display:flex;flex-direction:column;gap:2px;">${coverLabels}</div>`;
-      } else {
-        cellContent=off;
-        cellClass='';
-      }
-
-      return `<td class="${cellClass}" data-date="${dateStr}">${cellContent}</td>`;
-    }).join('');
-
-    tr.innerHTML=`<td class="wk-lbl">Wk ${w+1}</td><td class="date-lbl">${getWeekDates(w)}</td>${dayCells}`;
-    tbody.appendChild(tr);
-  }
-
-  // Add click handlers to cells
-  tbody.querySelectorAll('td.clickable').forEach(td=>{
-    td.addEventListener('click', ()=>{
-      const dateStr=td.dataset.date;
-      const timeOff=getTimeOffForPerson(sel, dateStr);
-      openModal(sel, dateStr, timeOff);
-    });
-  });
-}
-
-// --- Crew tab ---
-function renderCrewGrid(){
-  const grid=document.getElementById('crew-grid');
-  // remember which are open
-  const openWeeks=new Set();
-  grid.querySelectorAll('.crew-week.open').forEach(el=>openWeeks.add(parseInt(el.dataset.week)));
-  grid.innerHTML='';
-
-  for(let w=0;w<TOTAL_WEEKS;w++){
-    const weekEl=document.createElement('div');
-    weekEl.className='crew-week'+(openWeeks.has(w)?' open':'');
-    weekEl.dataset.week=w;
-
-    // FH core day = Mon (1), BH core day = Fri (5) — use effective (coverage-aware)
-    const fhDate=fmtDateISO(addDays(getWeekStart(w),1));
-    const bhDate=fmtDateISO(addDays(getWeekStart(w),5));
-    const fhCrew=getEffectiveCrewForDay(w,1,fhDate);
-    const bhCrew=getEffectiveCrewForDay(w,5,bhDate);
-
-    const fhHTML=fhCrew.map(p=>
-      `<span class="sum-badge sum-${ROLE_CLS[p.role]}">${p.name} <span style="opacity:0.7">${p.role}</span></span>`
-    ).join('');
-    const bhHTML=bhCrew.map(p=>
-      `<span class="sum-badge sum-${ROLE_CLS[p.role]}">${p.name} <span style="opacity:0.7">${p.role}</span></span>`
-    ).join('');
-
-    const header=document.createElement('div');
-    header.className='crew-week-header';
-    header.innerHTML=`
-      <span class="wk-num">Wk ${w+1}</span>
-      <span class="wk-dates">${getWeekDates(w)}</span>
-      <span class="wk-half"><span class="wk-half-label fh-lbl">FH</span>${fhHTML}</span>
-      <span class="wk-half"><span class="wk-half-label bh-lbl">BH</span>${bhHTML}</span>
-      <span class="chevron">▼</span>
-    `;
-    header.addEventListener('click',()=>{
-      weekEl.classList.toggle('open');
-    });
-
-    const daysEl=document.createElement('div');
-    daysEl.className='crew-days';
-
-    const weekStart=getWeekStart(w);
-    for(let d=0;d<7;d++){
-      const dayDate=addDays(weekStart,d);
-      const dateStr=fmtDateISO(dayDate);
-      const crew=getCrewForDay(w,d);
-      const coverage=getCoverageForDate(dateStr);
-      const dayEl=document.createElement('div');
-      dayEl.className='crew-day';
-
-      // Use effective crew — covers removed, cover people injected in their role
-      const effectiveCrew=getEffectiveCrewForDay(w,d,dateStr);
-      const slotsHTML=effectiveCrew.length>0
-        ? effectiveCrew.map(p=>{
-            let slotHTML;
-            if(p.covering){
-              slotHTML=`
-                <span class="person-slot clickable" data-person="${p.name}" data-date="${dateStr}" style="background:var(--green-light);color:var(--green-dark);border:1px solid var(--green-mid);">
-                  <span class="ps-name">${p.name}</span>
-                  <span class="ps-role">${p.role} ↔ ${p.coveringFor}</span>
-                </span>`;
-            } else {
-              slotHTML=`
-                <span class="person-slot ps-${ROLE_CLS[p.role]} clickable" data-person="${p.name}" data-date="${dateStr}">
-                  <span class="ps-name">${p.name}</span>
-                  <span class="ps-role">${p.role}</span>
-                </span>`;
-            }
-            return slotHTML;
-          }).join('')
-        : `<span class="no-crew">no coverage</span>`;
-
-      dayEl.innerHTML=`
-        <div class="crew-day-label">
-          <span class="day-name">${DAY_NAMES[d]}</span>
-          <span class="day-date">${fmtDate(dayDate)}</span>
-        </div>
-        <div class="crew-day-slots">${slotsHTML}</div>
-      `;
-      daysEl.appendChild(dayEl);
-    }
-    
-    // Add click handlers to person slots
-    daysEl.querySelectorAll('.clickable').forEach(slot=>{
-      slot.addEventListener('click', ()=>{
-        const personName=slot.dataset.person;
-        const dateStr=slot.dataset.date;
-        const timeOff=getTimeOffForPerson(personName, dateStr);
-        openModal(personName, dateStr, timeOff);
-      });
-    });
-
-    weekEl.appendChild(header);
-    weekEl.appendChild(daysEl);
-    grid.appendChild(weekEl);
-  }
-}
-
-// Expand / collapse all
-document.getElementById('expand-all').addEventListener('click',()=>{
-  document.querySelectorAll('.crew-week').forEach(el=>el.classList.add('open'));
-});
-document.getElementById('collapse-all').addEventListener('click',()=>{
-  document.querySelectorAll('.crew-week').forEach(el=>el.classList.remove('open'));
-});
-
-// Jump to week
-document.getElementById('jump-input').addEventListener('keydown',e=>{
-  if(e.key!=='Enter') return;
-  const val=e.target.value.trim();
-  let weekIdx=-1;
-  // Try plain number first
-  const num=parseInt(val);
-  if(!isNaN(num) && num>=1 && num<=TOTAL_WEEKS){ weekIdx=num-1; }
-  else {
-    // Try date like 9/5 or 9/5/2025
-    const parts=val.split('/');
-    if(parts.length>=2){
-      const month=parseInt(parts[0])-1;
-      const day=parseInt(parts[1]);
-      const year=parts[2]?parseInt(parts[2]):2025;
-      const target=new Date(year,month,day);
-      for(let w=0;w<TOTAL_WEEKS;w++){
-        const ws=getWeekStart(w);
-        const we=addDays(ws,6);
-        if(target>=ws && target<=we){ weekIdx=w; break; }
-      }
-    }
-  }
-  if(weekIdx>=0){
-    const el=document.querySelector(`.crew-week[data-week="${weekIdx}"]`);
-    if(el){
-      el.classList.add('open');
-      el.scrollIntoView({behavior:'smooth',block:'start'});
-    }
-  }
-  e.target.value='';
-});
-
-// Tab switching
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
-    
-    // Render calendar when switching to that tab
-    if(btn.dataset.tab === 'calendar'){
-      renderCalendar();
-    }
-    // Render time-off list when switching to that tab
-    if(btn.dataset.tab === 'timeoff'){
-      renderTimeOffList();
-    }
-  });
-});
-
-// Initialize Firestore listener (with delay to ensure Firebase is loaded)
-setTimeout(()=>{
-  initFirestoreListener();
-}, 500);
-
-renderChips();
 </script>
 </body>
 </html>

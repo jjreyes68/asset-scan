@@ -5,10 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Team Schedule</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script type="module">
-  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-  import { getFirestore, collection, addDoc, onSnapshot, query, where, orderBy, deleteDoc, doc, updateDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-  
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyD1nAFnyTdwjMPTuecAjgC-KZ1igThjnY4",
     authDomain: "aschedule-7f06a.firebaseapp.com",
@@ -19,19 +18,19 @@
     measurementId: "G-VE18N8MD9L"
   };
   
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
   
   window.firebaseDB = db;
-  window.firebaseCollection = collection;
-  window.firebaseAddDoc = addDoc;
-  window.firebaseOnSnapshot = onSnapshot;
-  window.firebaseQuery = query;
-  window.firebaseWhere = where;
-  window.firebaseOrderBy = orderBy;
-  window.firebaseDeleteDoc = deleteDoc;
-  window.firebaseDoc = doc;
-  window.firebaseUpdateDoc = updateDoc;
+  window.firebaseCollection = firebase.firestore.collection;
+  window.firebaseAddDoc = firebase.firestore.addDoc;
+  window.firebaseOnSnapshot = firebase.firestore.onSnapshot;
+  window.firebaseQuery = firebase.firestore.query;
+  window.firebaseWhere = firebase.firestore.where;
+  window.firebaseOrderBy = firebase.firestore.orderBy;
+  window.firebaseDeleteDoc = firebase.firestore.deleteDoc;
+  window.firebaseDoc = firebase.firestore.doc;
+  window.firebaseUpdateDoc = firebase.firestore.updateDoc;
 </script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -73,7 +72,7 @@
   .hint { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: 'DM Mono', monospace; }
 
   /* Chips */
-  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: grab; user-select: none; border: 1px solid; transition: all 0.1s; }
+  .chip { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; cursor: grab; user-select: none; border: 1px solid; transition: box-shadow 0.1s; }
   .chip:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   .chip:active { cursor: grabbing; transform: scale(0.98); }
   .chip.dragging { opacity: 0.3; }
@@ -93,7 +92,7 @@
 
   /* Tabs */
   .tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 18px; border: none; background: none; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.1s; }
+  .tab-btn { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; padding: 8px 18px; border: none; background: none; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; }
   .tab-btn:hover { color: var(--text); }
   .tab-btn.active { color: var(--blue-text); border-bottom-color: var(--blue-text); }
   .tab-panel { display: none; }
@@ -126,7 +125,7 @@
   .week-grid { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
   table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
   thead { position: sticky; top: 0; z-index: 1; }
-  th { font-weight: 500; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 10px; border-bottom: 1px solid var(--border); background: white; }
+  th { font-weight: 500; font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; text-align: left; padding: 10px; border-bottom: 1px solid var(--border); background: #f8f9fa; }
   td { padding: 7px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
   tr.alt td { background: #fafbfc; }
@@ -578,7 +577,7 @@
         <div class="pitch-card">
           <div class="pitch-icon">&#128181;</div>
           <div class="pitch-title">Your paycheck stays the same</div>
-          <div class="pitch-body">Same total hours as the existing schedule means your base pay and overtime don&rsquo;t change. No surprises on payday &mdash; what you earn now is what you&rsquo;ll earn then.</div>
+          <div class="pitch-body">Same total hours as the existing schedule means your base pay and overtime don&rsquo;t change. No surprises on payday &mdash; what you earn now is what you&rsquo;ll earn later.</div>
         </div>
       </div>
     </div>
@@ -998,501 +997,389 @@ function updateCoverageSuggestions(){
 }
 
 // --- Drag & Drop ---
-function setupDragDrop(){
-  document.addEventListener('dragstart', e => {
-    if(!e.target.classList.contains('chip')) return;
-    e.target.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', e.target.dataset.name);
-  });
-
-  document.addEventListener('dragend', e => {
-    if(!e.target.classList.contains('chip')) return;
-    e.target.classList.remove('dragging');
-  });
-
-  document.querySelectorAll('.drop-zone').forEach(zone => {
-    zone.addEventListener('dragover', e => {
-      e.preventDefault();
-      zone.classList.add('drag-over');
-    });
-    zone.addEventListener('dragleave', () => {
-      zone.classList.remove('drag-over');
-    });
-    zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('drag-over');
-      const name = e.dataTransfer.getData('text/plain');
-      const targetHalf = zone.dataset.half;
-      movePerson(name, targetHalf);
-    });
-  });
-}
-
-function movePerson(name, targetHalf){
-  const currentHalf = state.fh.includes(name) ? 'fh' : 'bh';
-  if(currentHalf === targetHalf) return;
-  
-  state.fh = state.fh.filter(p => p !== name);
-  state.bh = state.bh.filter(p => p !== name);
-  
-  if(targetHalf === 'fh') state.fh.push(name);
-  else state.bh.push(name);
-  
-  renderZones();
-  renderTable();
-  renderCrewGrid();
-  renderCalendar();
-}
-
-function renderZones(){
-  const fhZone = document.getElementById('zone-fh');
-  const bhZone = document.getElementById('zone-bh');
-  fhZone.innerHTML = '';
-  bhZone.innerHTML = '';
-  
-  state.fh.forEach((name, idx) => {
-    fhZone.appendChild(createChip(name, idx, 'fh'));
-  });
-  state.bh.forEach((name, idx) => {
-    bhZone.appendChild(createChip(name, idx, 'bh'));
-  });
-}
-
-function createChip(name, posIdx, half){
-  const role = getRoleForOp(posIdx, 0);
-  const chip = document.createElement('div');
-  chip.className = `chip ${half}-chip`;
-  chip.dataset.name = name;
-  chip.draggable = true;
-  chip.innerHTML = `
-    <span class="chip-pos">${posIdx + 1}</span>
-    <span class="chip-name">${name}</span>
-    <span class="chip-role role-${role}">${role}</span>
-  `;
-  return chip;
-}
-
-function getCrewForDay(weekIdx, dayOfWeek){
-  const crew = [];
-  
-  // Determine which halves are working
-  const fhWorking = dayOfWeek <= 2 || (dayOfWeek === 3 && hasWed('fh', weekIdx));
-  const bhWorking = dayOfWeek >= 4 || (dayOfWeek === 3 && hasWed('bh', weekIdx));
-  
-  if(fhWorking){
-    state.fh.forEach((name, idx) => {
-      const role = getRoleForOp(idx, weekIdx);
-      crew.push({ name, half: 'fh', role });
-    });
-  }
-  
-  if(bhWorking){
-    state.bh.forEach((name, idx) => {
-      const role = getRoleForOp(idx, weekIdx);
-      crew.push({ name, half: 'bh', role });
-    });
-  }
-  
-  return crew;
-}
-
-function renderTable(){
-  const tbody = document.getElementById('sched-body');
-  tbody.innerHTML = '';
-  
-  const opSelect = document.getElementById('op-select');
-  const selectedOp = opSelect.value || '';
-  
-  if(!selectedOp){
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--text-muted);">Select an operator to view their schedule</td></tr>';
-    return;
-  }
-  
-  for(let w = 0; w < TOTAL_WEEKS; w++){
-    const weekStart = getWeekStart(w);
-    const row = document.createElement('tr');
-    if(w % 2 === 1) row.classList.add('alt');
-    
-    row.innerHTML = `<td class="wk-lbl">W${w+1}</td><td class="date-lbl">${getWeekDates(w)}</td>`;
-    
-    for(let d = 0; d < 7; d++){
-      const date = new Date(weekStart);
-      date.setDate(date.getDate() + d);
-      const dateISO = fmtDateISO(date);
-      
-      const dayOfWeek = date.getDay();
-      const crew = getCrewForDay(w, dayOfWeek);
-      
-      // NEW: Check if selectedOp is on time-off
-      const timeOff = getTimeOffOnDate(selectedOp, dateISO);
-      
-      // Find the operator in the crew
-      const opInCrew = crew.find(p => p.name === selectedOp);
-      
-      const td = document.createElement('td');
-      td.classList.add('clickable');
-      
-      if(timeOff){
-        // Show as OFF with coverage
-        td.innerHTML = `<span class="rbadge off">Off</span>`;
-        const coverage = getCoverageForDate(selectedOp, dateISO);
-        if(coverage && coverage.length > 0){
-          td.innerHTML += `<div class="coverage-text">Cover: <strong>${coverage.join(', ')}</strong></div>`;
-        }
-      }else if(opInCrew){
-        const role = opInCrew.role;
-        td.innerHTML = `<span class="rbadge ${ROLE_CLS[role]}">${role}</span>`;
-      }else{
-        td.innerHTML = `<span class="rbadge off">off</span>`;
-      }
-      
-      td.onclick = () => openModal(selectedOp, dateISO);
-      row.appendChild(td);
-    }
-    tbody.appendChild(row);
-  }
-}
-
-function renderCrewGrid(){
-  const grid = document.getElementById('crew-grid');
-  grid.innerHTML = '';
-  
-  for(let w = 0; w < TOTAL_WEEKS; w++){
-    const week = document.createElement('div');
-    week.className = 'crew-week';
-    
-    const weekStart = getWeekStart(w);
-    const fhCrew = [];
-    const bhCrew = [];
-    
-    for(let d = 0; d < 7; d++){
-      const date = new Date(weekStart);
-      date.setDate(date.getDate() + d);
-      const dayOfWeek = date.getDay();
-      const crew = getCrewForDay(w, dayOfWeek);
-      
-      crew.forEach(p => {
-        if(p.half === 'fh' && !fhCrew.includes(p.name)) fhCrew.push(p.name);
-        if(p.half === 'bh' && !bhCrew.includes(p.name)) bhCrew.push(p.name);
-      });
-    }
-    
-    const header = document.createElement('div');
-    header.className = 'crew-week-header';
-    header.onclick = () => week.classList.toggle('open');
-    
-    const fhBadges = fhCrew.length > 0 ? `<span class="wk-half-label fh-lbl">FH</span><span class="sum-badge sum-d1">${fhCrew.length}</span>` : '';
-    const bhBadges = bhCrew.length > 0 ? `<span class="wk-half-label bh-lbl">BH</span><span class="sum-badge sum-d1">${bhCrew.length}</span>` : '';
-    
-    header.innerHTML = `
-      <div class="wk-num">W${w+1}</div>
-      <div class="wk-dates">${getWeekDates(w)}</div>
-      <div class="wk-half">${fhBadges}</div>
-      <div class="wk-half">${bhBadges}</div>
-      <div class="chevron">▼</div>
-    `;
-    week.appendChild(header);
-    
-    const days = document.createElement('div');
-    days.className = 'crew-days';
-    
-    for(let d = 0; d < 7; d++){
-      const date = new Date(weekStart);
-      date.setDate(date.getDate() + d);
-      const dateISO = fmtDateISO(date);
-      const dayOfWeek = date.getDay();
-      const crew = getCrewForDay(w, dayOfWeek);
-      
-      const dayEl = document.createElement('div');
-      dayEl.className = 'crew-day';
-      
-      const label = document.createElement('div');
-      label.className = 'crew-day-label';
-      label.innerHTML = `<div class="day-name">${DAY_NAMES[dayOfWeek]}</div><div class="day-date">${fmtDate(date)}</div>`;
-      dayEl.appendChild(label);
-      
-      const slots = document.createElement('div');
-      slots.className = 'crew-day-slots';
-      
-      crew.forEach(p => {
-        // NEW: Check if person is on time-off
-        const timeOff = getTimeOffOnDate(p.name, dateISO);
-        if(timeOff) return; // Skip the off-duty person
-      });
-      
-      if(crew.length === 0){
-        slots.innerHTML = '<span class="no-crew">No crew</span>';
-      }else{
-        crew.forEach(p => {
-          const timeOff = getTimeOffOnDate(p.name, dateISO);
-          if(timeOff){
-            // Show coverage instead
-            const coverage = getCoverageForDate(p.name, dateISO);
-            if(coverage && coverage.length > 0){
-              coverage.forEach(covName => {
-                const slot = document.createElement('div');
-                slot.className = 'person-slot ps-d1';
-                slot.innerHTML = `
-                  <span class="ps-name">${covName}</span>
-                  <span class="ps-role">Cover</span>
-                `;
-                slots.appendChild(slot);
-              });
-            }
-          }else{
-            const slot = document.createElement('div');
-            slot.className = `person-slot ps-${ROLE_CLS[p.role]}`;
-            slot.innerHTML = `
-              <span class="ps-name">${p.name}</span>
-              <span class="ps-role">${p.role}</span>
-            `;
-            slots.appendChild(slot);
-          }
-        });
-      }
-      
-      dayEl.appendChild(slots);
-      days.appendChild(dayEl);
-    }
-    
-    week.appendChild(days);
-    grid.appendChild(week);
-  }
-}
-
-function renderCalendar(){
-  const grid = document.getElementById('calendar-grid');
-  grid.innerHTML = '';
-  
-  const m = state.calendar.currentMonth;
-  const y = state.calendar.currentYear;
-  
-  const firstDay = new Date(y, m, 1);
-  const lastDay = new Date(y, m + 1, 0);
-  const startDate = new Date(firstDay);
-  startDate.setDate(startDate.getDate() - firstDay.getDay());
-  
-  const monthLabel = document.getElementById('cal-month-label');
-  monthLabel.textContent = new Date(y, m, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  
-  for(let i = 0; i < 7; i++){
-    const header = document.createElement('div');
-    header.className = 'cal-header';
-    header.textContent = DAY_NAMES[i];
-    grid.appendChild(header);
-  }
-  
-  let d = new Date(startDate);
-  while(d <= lastDay){
-    const dayEl = document.createElement('div');
-    dayEl.className = 'cal-day';
-    
-    if(d.getMonth() !== m) dayEl.classList.add('other-month');
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    d.setHours(0,0,0,0);
-    if(d.getTime() === today.getTime()) dayEl.classList.add('today');
-    
-    const dayNum = document.createElement('div');
-    dayNum.className = 'cal-day-number';
-    dayNum.textContent = d.getDate();
-    dayEl.appendChild(dayNum);
-    
-    const events = document.createElement('div');
-    events.className = 'cal-day-events';
-    
-    const dateISO = fmtDateISO(d);
-    const weekIdx = Math.floor((d - START) / (7 * 24 * 60 * 60 * 1000));
-    const dayOfWeek = d.getDay();
-    const crew = getCrewForDay(weekIdx, dayOfWeek);
-    
-    crew.forEach(p => {
-      const timeOff = getTimeOffOnDate(p.name, dateISO);
-      if(timeOff) return;
-      
-      const ev = document.createElement('div');
-      ev.className = `cal-event working`;
-      ev.textContent = `${p.name} ${p.role}`;
-      events.appendChild(ev);
-    });
-    
-    // NEW: Show time-off badges
-    state.timeOffRequests.forEach(req => {
-      if(req.startDate <= dateISO && req.endDate >= dateISO){
-        const ev = document.createElement('div');
-        ev.className = `cal-event ${req.type}`;
-        ev.textContent = `${req.personName} ${req.type}`;
-        events.appendChild(ev);
-      }
-    });
-    
-    dayEl.appendChild(events);
-    
-    dayEl.onclick = () => {
-      document.querySelectorAll('.cal-day.selected').forEach(d => d.classList.remove('selected'));
-      dayEl.classList.add('selected');
-      renderDayPanel(d);
-    };
-    
-    grid.appendChild(dayEl);
-    d.setDate(d.getDate() + 1);
-  }
-}
-
-function renderDayPanel(date){
-  const panel = document.getElementById('day-panel');
-  const dateISO = fmtDateISO(date);
-  const weekIdx = Math.floor((date - START) / (7 * 24 * 60 * 60 * 1000));
-  const dayOfWeek = date.getDay();
-  const crew = getCrewForDay(weekIdx, dayOfWeek);
-  
-  let html = `
-    <div class="day-panel-date">${DAY_NAMES[dayOfWeek]}</div>
-    <div class="day-panel-sub">${date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
-  `;
-  
-  const working = [];
-  const offDuty = [];
-  
-  crew.forEach(p => {
-    const timeOff = getTimeOffOnDate(p.name, dateISO);
-    if(timeOff){
-      offDuty.push({ name: p.name, timeOff, coverage: getCoverageForDate(p.name, dateISO) });
-    }else{
-      working.push(p);
-    }
-  });
-  
-  if(working.length > 0){
-    html += '<div class="day-panel-section-label">Working</div>';
-    working.forEach(p => {
-      const roleClass = ROLE_CLS[p.role];
-      html += `
-        <div class="day-panel-person dp-working">
-          <div class="dp-name">${p.name}</div>
-          <div class="dp-role role-${roleClass}">${p.role}</div>
-        </div>
+function renderChips(){
+  ['fh','bh'].forEach(half=>{
+    const zone = document.getElementById(`zone-${half}`);
+    zone.innerHTML = '';
+    const team = state[half];
+    team.forEach((name, idx)=>{
+      const chip = document.createElement('div');
+      chip.className = `chip ${half}-chip`;
+      chip.draggable = true;
+      const role = getRoleForOp(idx, 0);
+      chip.innerHTML = `
+        <span class="chip-pos">${idx+1}</span>
+        <span class="chip-name">${name}</span>
+        <span class="chip-role role-${ROLE_CLS[role]}">${role}</span>
       `;
+      chip.addEventListener('dragstart', e=>{
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', JSON.stringify({half, idx, name}));
+        chip.classList.add('dragging');
+      });
+      chip.addEventListener('dragend', e => chip.classList.remove('dragging'));
+      zone.appendChild(chip);
     });
-  }
-  
-  if(offDuty.length > 0){
-    html += '<div class="day-panel-section-label">Off Duty</div>';
-    offDuty.forEach(item => {
-      html += `
-        <div class="day-panel-person dp-off">
-          <div class="dp-name">${item.name} <span style="font-size:10px;opacity:0.7;">(${item.timeOff.type})</span></div>
-        </div>
-      `;
-      if(item.coverage && item.coverage.length > 0){
-        html += `<div class="day-panel-person dp-covering">
-          <div class="dp-name">Coverage: ${item.coverage.join(', ')}</div>
-          <div class="dp-cover-label">Covering</div>
-        </div>`;
-      }
-    });
-  }
-  
-  html += `<button class="day-panel-add-btn" onclick="openModal('', '${dateISO}')">+ Add Time Off</button>`;
-  
-  panel.innerHTML = html;
-}
-
-function renderTimeOffList(){
-  const list = document.getElementById('timeoff-list');
-  
-  if(state.timeOffRequests.length === 0){
-    list.innerHTML = '<div class="empty-timeoff">No time-off requests yet</div>';
-    return;
-  }
-  
-  list.innerHTML = '';
-  state.timeOffRequests.forEach(req => {
-    const item = document.createElement('div');
-    item.className = 'timeoff-item';
-    
-    const typeIcon = req.type === 'vacation' ? '🏖️' : req.type === 'sick' ? '🤒' : '📅';
-    
-    const coverage = req.coverage && req.coverage.length > 0 ? `<strong>${req.coverage.join(', ')}</strong>` : 'None assigned';
-    
-    item.innerHTML = `
-      <div class="to-item-type ${req.type}">${typeIcon}</div>
-      <div class="to-item-details">
-        <div class="to-item-person">${req.personName}</div>
-        <div class="to-item-dates">${req.startDate} to ${req.endDate}</div>
-        <div class="to-item-coverage">Coverage: ${coverage}</div>
-      </div>
-      <div class="to-item-actions">
-        <button class="to-item-btn edit" onclick="openModal('${req.personName}', '${req.startDate}', state.timeOffRequests.find(r => r.id === '${req.id}'))">Edit</button>
-        <button class="to-item-btn delete" onclick="deleteTimeOffRequest('${req.id}')">Delete</button>
-      </div>
-    `;
-    list.appendChild(item);
   });
 }
 
-// --- Event Listeners ---
-document.querySelectorAll('.tab-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
+['fh','bh'].forEach(half=>{
+  const zone = document.getElementById(`zone-${half}`);
+  zone.addEventListener('dragover', e=>{
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    zone.classList.add('drag-over');
+  });
+  zone.addEventListener('dragleave', e => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e=>{
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+    if(data.half !== half){
+      const moved = state[data.half].splice(data.idx, 1)[0];
+      state[half].push(moved);
+      renderChips();
+    }
+  });
+});
+
+// --- Tabs ---
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
     const tab = btn.dataset.tab;
     document.getElementById(`tab-${tab}`).classList.add('active');
+    if(tab === 'individual') renderTable();
     if(tab === 'crew') renderCrewGrid();
     if(tab === 'calendar') renderCalendar();
     if(tab === 'timeoff') renderTimeOffList();
   });
 });
 
-document.getElementById('op-select').addEventListener('change', renderTable);
-
-document.querySelectorAll('.type-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    state.modalState.type = btn.dataset.type;
-    updateModalUI();
+// --- Individual Tab ---
+function renderTable(){
+  const selectOp = document.getElementById('op-select');
+  const tbody = document.getElementById('sched-body');
+  selectOp.innerHTML = '<option value="">— pick an operator —</option>';
+  [...state.fh, ...state.bh].forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    selectOp.appendChild(opt);
   });
-});
-
-document.getElementById('modal-person').addEventListener('change', e => {
-  state.modalState.person = e.target.value;
-  updateCoverageSuggestions();
-});
-
-document.getElementById('modal-start').addEventListener('change', e => {
-  state.modalState.startDate = e.target.value;
-  updateCoverageSuggestions();
-});
-
-document.getElementById('modal-end').addEventListener('change', e => {
-  state.modalState.endDate = e.target.value;
-  updateCoverageSuggestions();
-});
-
-document.querySelectorAll('input[name="coverage-mode"]').forEach(radio => {
-  radio.addEventListener('change', e => {
-    state.modalState.coverageMode = e.target.value;
-    updateCoverageSuggestions();
+  
+  selectOp.addEventListener('change', e => {
+    state.selected = e.target.value;
+    tbody.innerHTML = '';
+    if(!state.selected) return;
+    
+    const personIdx = state.fh.includes(state.selected) ? state.fh.indexOf(state.selected) : state.bh.indexOf(state.selected);
+    const half = state.fh.includes(state.selected) ? 'fh' : 'bh';
+    
+    for(let wk=0; wk<TOTAL_WEEKS; wk++){
+      const row = document.createElement('tr');
+      if(wk%2) row.classList.add('alt');
+      
+      const weekStart = getWeekStart(wk);
+      const daysInWeek = half === 'fh' ? (hasWed('fh', wk) ? 4 : 3) : (hasWed('bh', wk) ? 4 : 3);
+      
+      row.innerHTML = `<td class="wk-lbl">W${wk+1}</td><td class="date-lbl">${getWeekDates(wk)}</td>`;
+      
+      for(let d=0; d<7; d++){
+        const cellDate = addDays(weekStart, d);
+        const dateISO = fmtDateISO(cellDate);
+        const isWorking = half === 'fh' ? (hasWed('fh', wk) ? d < 4 : d < 3) : (hasWed('bh', wk) ? d > 0 && d < 5 : d > 2);
+        
+        if(isWorking){
+          const role = getRoleForOp(personIdx, wk);
+          const timeOff = getTimeOffOnDate(state.selected, dateISO);
+          let content = `<span class="rbadge ${ROLE_CLS[role]}">${role}</span>`;
+          if(timeOff){
+            content = `<span class="to-badge ${timeOff.type}"><span class="icon">${timeOff.type==='vacation'?'🏖️':timeOff.type==='sick'?'🤒':'📅'}</span>${timeOff.type}</span>`;
+          }
+          row.innerHTML += `<td class="clickable" onclick="openModal('${state.selected}', '${dateISO}')">${content}</td>`;
+        }else{
+          row.innerHTML += `<td><span class="rbadge off">off</span></td>`;
+        }
+      }
+      tbody.appendChild(row);
+    }
   });
-});
+}
 
-document.getElementById('modal-cancel').addEventListener('click', closeModal);
-
-document.getElementById('modal-delete').addEventListener('click', async () => {
-  if(state.modalState.editingId){
-    await deleteTimeOffRequest(state.modalState.editingId);
-    closeModal();
+// --- Crew Tab ---
+function renderCrewGrid(){
+  const grid = document.getElementById('crew-grid');
+  grid.innerHTML = '';
+  
+  for(let wk=0; wk<TOTAL_WEEKS; wk++){
+    const weekDiv = document.createElement('div');
+    weekDiv.className = 'crew-week';
+    const weekStart = getWeekStart(wk);
+    
+    const header = document.createElement('div');
+    header.className = 'crew-week-header';
+    header.onclick = () => weekDiv.classList.toggle('open');
+    
+    let fhBadges = '', bhBadges = '';
+    const fhFull = hasWed('fh', wk) ? 4 : 3;
+    const bhFull = hasWed('bh', wk) ? 4 : 3;
+    for(let i=0; i<fhFull; i++){
+      const role = getRoleForOp(i, wk);
+      fhBadges += `<span class="sum-badge sum-${ROLE_CLS[role]}">${role}</span>`;
+    }
+    for(let i=0; i<bhFull; i++){
+      const role = getRoleForOp(i, wk);
+      bhBadges += `<span class="sum-badge sum-${ROLE_CLS[role]}">${role}</span>`;
+    }
+    
+    header.innerHTML = `
+      <div class="wk-num">W${wk+1}</div>
+      <div class="wk-dates">${getWeekDates(wk)}</div>
+      <div class="wk-half"><span class="wk-half-label fh-lbl">FH</span> ${fhBadges}</div>
+      <div class="wk-half"><span class="wk-half-label bh-lbl">BH</span> ${bhBadges}</div>
+      <div class="chevron">▼</div>
+    `;
+    weekDiv.appendChild(header);
+    
+    const days = document.createElement('div');
+    days.className = 'crew-days';
+    
+    for(let d=0; d<7; d++){
+      const cellDate = addDays(weekStart, d);
+      const dateISO = fmtDateISO(cellDate);
+      
+      const day = document.createElement('div');
+      day.className = 'crew-day';
+      
+      const label = document.createElement('div');
+      label.className = 'crew-day-label';
+      label.innerHTML = `
+        <div class="day-name">${DAY_NAMES[d]}</div>
+        <div class="day-date">${fmtDate(cellDate)}</div>
+      `;
+      day.appendChild(label);
+      
+      const slots = document.createElement('div');
+      slots.className = 'crew-day-slots';
+      
+      const fhWorking = state.fh.filter((name, idx) => hasWed('fh', wk) ? idx < 4 : idx < 3);
+      const bhWorking = state.bh.filter((name, idx) => hasWed('bh', wk) ? (d > 0 && d < 5 || idx < 4) && d !== 0 && d !== 3 : (idx < 4 && d < 3 || idx >= 4 && (d === 3 || d > 3)));
+      
+      let crew = [];
+      if(hasWed('fh', wk)){
+        crew = d < 4 ? fhWorking : [];
+      }else{
+        crew = d < 3 ? fhWorking : [];
+      }
+      if(hasWed('bh', wk)){
+        if(d > 0 && d < 5) crew = crew.concat(state.bh.slice(0, 5));
+      }else{
+        if(d > 2) crew = crew.concat(state.bh.slice(0, 5));
+      }
+      
+      crew = crew.filter((name, idx) => {
+        const half = state.fh.includes(name) ? 'fh' : 'bh';
+        const personIdx = half === 'fh' ? state.fh.indexOf(name) : state.bh.indexOf(name);
+        const shouldWork = half === 'fh' ? (hasWed('fh', wk) ? personIdx < 4 : personIdx < 3) : (hasWed('bh', wk) ? personIdx < 4 : personIdx < 3);
+        if(!shouldWork) return false;
+        if(half === 'fh' && hasWed('fh', wk) && d >= 4) return false;
+        if(half === 'fh' && !hasWed('fh', wk) && d >= 3) return false;
+        if(half === 'bh' && hasWed('bh', wk) && d < 1) return false;
+        if(half === 'bh' && !hasWed('bh', wk) && d < 3) return false;
+        return true;
+      });
+      
+      crew.forEach(name=>{
+        const half = state.fh.includes(name) ? 'fh' : 'bh';
+        const personIdx = half === 'fh' ? state.fh.indexOf(name) : state.bh.indexOf(name);
+        const role = getRoleForOp(personIdx, wk);
+        const timeOff = getTimeOffOnDate(name, dateISO);
+        
+        const ps = document.createElement('div');
+        ps.className = `person-slot ps-${ROLE_CLS[role]}`;
+        if(timeOff){
+          ps.style.opacity = '0.5';
+          ps.innerHTML = `<span class="ps-name">${name}</span><span class="ps-role">${timeOff.type}</span>`;
+        }else{
+          ps.innerHTML = `<span class="ps-name">${name}</span><span class="ps-role">${role}</span>`;
+        }
+        slots.appendChild(ps);
+      });
+      
+      if(crew.length === 0){
+        slots.innerHTML = '<span class="no-crew">—</span>';
+      }
+      day.appendChild(slots);
+      days.appendChild(day);
+    }
+    weekDiv.appendChild(days);
+    grid.appendChild(weekDiv);
   }
+}
+
+function getCrewForDay(weekIdx, dayOfWeek){
+  const crew = [];
+  state.fh.forEach((name, idx) => {
+    const role = getRoleForOp(idx, weekIdx);
+    const shouldWork = hasWed('fh', weekIdx) ? idx < 4 : idx < 3;
+    if(!shouldWork) return;
+    if(hasWed('fh', weekIdx) && dayOfWeek >= 4) return;
+    if(!hasWed('fh', weekIdx) && dayOfWeek >= 3) return;
+    crew.push({name, role, half: 'fh'});
+  });
+  state.bh.forEach((name, idx) => {
+    const role = getRoleForOp(idx, weekIdx);
+    const shouldWork = hasWed('bh', weekIdx) ? idx < 4 : idx < 3;
+    if(!shouldWork) return;
+    if(hasWed('bh', weekIdx) && dayOfWeek < 1) return;
+    if(!hasWed('bh', weekIdx) && dayOfWeek < 3) return;
+    crew.push({name, role, half: 'bh'});
+  });
+  return crew;
+}
+
+// --- Calendar Tab ---
+function renderCalendar(){
+  const grid = document.getElementById('calendar-grid');
+  grid.innerHTML = '';
+  
+  const m = state.calendar.currentMonth, y = state.calendar.currentYear;
+  const first = new Date(y, m, 1);
+  const last = new Date(y, m+1, 0);
+  const startDate = new Date(first);
+  startDate.setDate(startDate.getDate() - first.getDay());
+  
+  document.getElementById('cal-month-label').textContent = `${first.toLocaleString('default', {month:'long'})} ${y}`;
+  
+  ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(day => {
+    const h = document.createElement('div');
+    h.className = 'cal-header';
+    h.textContent = day;
+    grid.appendChild(h);
+  });
+  
+  for(let i=0; i<42; i++){
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + i);
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'cal-day';
+    
+    if(d.getMonth() !== m) dayDiv.classList.add('other-month');
+    if(d.toDateString() === new Date().toDateString()) dayDiv.classList.add('today');
+    
+    const dateISO = fmtDateISO(d);
+    const weekIdx = Math.floor((d - START) / (7*24*60*60*1000));
+    const dayOfWeek = d.getDay();
+    const crew = getCrewForDay(weekIdx, dayOfWeek);
+    
+    let content = `<div class="cal-day-number">${d.getDate()}</div><div class="cal-day-events">`;
+    crew.forEach(p => {
+      const timeOff = getTimeOffOnDate(p.name, dateISO);
+      const type = timeOff ? timeOff.type : 'working';
+      content += `<div class="cal-event ${type}">${p.name}</div>`;
+    });
+    content += '</div>';
+    dayDiv.innerHTML = content;
+    
+    dayDiv.addEventListener('click', () => {
+      document.querySelectorAll('.cal-day').forEach(x => x.classList.remove('selected'));
+      dayDiv.classList.add('selected');
+      
+      const panel = document.getElementById('day-panel');
+      if(crew.length === 0){
+        panel.innerHTML = '<div class="day-panel-empty">No crew scheduled</div>';
+      }else{
+        panel.innerHTML = `
+          <div class="day-panel-date">${d.toLocaleDateString()}</div>
+          <div class="day-panel-sub">${DAY_NAMES[dayOfWeek]}</div>
+          <div class="day-panel-section-label">Working</div>
+        `;
+        crew.filter(p => !getTimeOffOnDate(p.name, dateISO)).forEach(p => {
+          panel.innerHTML += `
+            <div class="day-panel-person dp-working">
+              <div class="dp-name">${p.name}</div>
+              <div class="dp-role role-${ROLE_CLS[p.role]}">${p.role}</div>
+            </div>
+          `;
+        });
+        const offPeople = crew.filter(p => getTimeOffOnDate(p.name, dateISO));
+        if(offPeople.length > 0){
+          panel.innerHTML += '<div class="day-panel-section-label">Off</div>';
+          offPeople.forEach(p => {
+            const timeOff = getTimeOffOnDate(p.name, dateISO);
+            panel.innerHTML += `
+              <div class="day-panel-person dp-off">
+                <div class="dp-name">${p.name}</div>
+                <div style="font-size:11px;opacity:0.7;">${timeOff.type}</div>
+              </div>
+            `;
+          });
+        }
+        panel.innerHTML += `<button class="day-panel-add-btn" onclick="openModal('', '${dateISO}')">+ Add someone</button>`;
+      }
+    });
+    grid.appendChild(dayDiv);
+  }
+}
+
+document.getElementById('cal-prev-month')?.addEventListener('click', () => {
+  state.calendar.currentMonth--;
+  if(state.calendar.currentMonth < 0){
+    state.calendar.currentMonth = 11;
+    state.calendar.currentYear--;
+  }
+  renderCalendar();
+});
+document.getElementById('cal-next-month')?.addEventListener('click', () => {
+  state.calendar.currentMonth++;
+  if(state.calendar.currentMonth > 11){
+    state.calendar.currentMonth = 0;
+    state.calendar.currentYear++;
+  }
+  renderCalendar();
+});
+document.getElementById('cal-today')?.addEventListener('click', () => {
+  state.calendar.currentMonth = new Date().getMonth();
+  state.calendar.currentYear = new Date().getFullYear();
+  renderCalendar();
 });
 
-document.getElementById('modal-save').addEventListener('click', async () => {
-  if(!state.modalState.person || !state.modalState.startDate || !state.modalState.endDate){
-    alert('Please fill in all fields');
+// --- Time Off List Tab ---
+function renderTimeOffList(){
+  const list = document.getElementById('timeoff-list');
+  if(state.timeOffRequests.length === 0){
+    list.innerHTML = '<div class="empty-timeoff">No time-off requests yet</div>';
     return;
   }
-  
-  await saveTimeOffRequest({
+  list.innerHTML = '';
+  state.timeOffRequests.forEach(req => {
+    const item = document.createElement('div');
+    item.className = 'timeoff-item';
+    const icon = req.type === 'vacation' ? '🏖️' : req.type === 'sick' ? '🤒' : '📅';
+    item.innerHTML = `
+      <div class="to-item-type ${req.type}">${icon}</div>
+      <div class="to-item-details">
+        <div class="to-item-person">${req.personName}</div>
+        <div class="to-item-dates">${req.startDate} → ${req.endDate}</div>
+        <div class="to-item-coverage">Covering: <strong>${req.coverage.join(', ') || 'N/A'}</strong></div>
+      </div>
+      <div class="to-item-actions">
+        <button class="to-item-btn edit" onclick="openModal('${req.personName}', '${req.startDate}', {id:'${req.id}',type:'${req.type}',personName:'${req.personName}',startDate:'${req.startDate}',endDate:'${req.endDate}',coverage:${JSON.stringify(req.coverage).replace(/"/g,'&quot;')}})">Edit</button>
+        <button class="to-item-btn delete" onclick="if(confirm('Delete this time-off request?')) deleteTimeOffRequest('${req.id}')">Delete</button>
+      </div>
+    `;
+    list.appendChild(item);
+  });
+}
+
+// --- Modal Handlers ---
+document.getElementById('modal-cancel')?.addEventListener('click', closeModal);
+document.getElementById('modal-save')?.addEventListener('click', () => {
+  if(!state.modalState.person) return alert('Select a person');
+  saveTimeOffRequest({
     id: state.modalState.editingId,
     type: state.modalState.type,
     personName: state.modalState.person,
@@ -1502,81 +1389,42 @@ document.getElementById('modal-save').addEventListener('click', async () => {
   });
   closeModal();
 });
-
-document.getElementById('add-timeoff-btn').addEventListener('click', () => {
-  openModal('', fmtDateISO(new Date()));
-});
-
-document.getElementById('expand-all').addEventListener('click', () => {
-  document.querySelectorAll('.crew-week').forEach(w => w.classList.add('open'));
-});
-
-document.getElementById('collapse-all').addEventListener('click', () => {
-  document.querySelectorAll('.crew-week').forEach(w => w.classList.remove('open'));
-});
-
-document.getElementById('jump-input').addEventListener('keydown', e => {
-  if(e.key === 'Enter'){
-    const val = e.target.value;
-    let weekIdx = 0;
-    if(val.includes('/')){
-      const [m, w] = val.split('/');
-      weekIdx = (parseInt(m) - 1) * 4 + parseInt(w) - 1;
-    }else{
-      weekIdx = parseInt(val) - 1;
-    }
-    
-    if(weekIdx >= 0 && weekIdx < TOTAL_WEEKS){
-      const week = document.querySelectorAll('.crew-week')[weekIdx];
-      if(week){
-        week.classList.add('open');
-        week.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
+document.getElementById('modal-delete')?.addEventListener('click', () => {
+  if(state.modalState.editingId && confirm('Delete this request?')){
+    deleteTimeOffRequest(state.modalState.editingId);
+    closeModal();
   }
 });
+document.getElementById('add-timeoff-btn')?.addEventListener('click', () => openModal(''));
 
-document.getElementById('cal-prev-month').addEventListener('click', () => {
-  state.calendar.currentMonth--;
-  if(state.calendar.currentMonth < 0){
-    state.calendar.currentMonth = 11;
-    state.calendar.currentYear--;
-  }
-  renderCalendar();
+document.querySelectorAll('.type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.modalState.type = btn.dataset.type;
+    updateModalUI();
+  });
 });
-
-document.getElementById('cal-next-month').addEventListener('click', () => {
-  state.calendar.currentMonth++;
-  if(state.calendar.currentMonth > 11){
-    state.calendar.currentMonth = 0;
-    state.calendar.currentYear++;
-  }
-  renderCalendar();
+document.querySelectorAll('input[name="coverage-mode"]').forEach(radio => {
+  radio.addEventListener('change', e => {
+    state.modalState.coverageMode = e.target.value;
+    updateCoverageSuggestions();
+  });
 });
-
-document.getElementById('cal-today').addEventListener('click', () => {
-  const today = new Date();
-  state.calendar.currentMonth = today.getMonth();
-  state.calendar.currentYear = today.getFullYear();
-  renderCalendar();
+document.getElementById('modal-person')?.addEventListener('change', e => {
+  state.modalState.person = e.target.value;
+  updateCoverageSuggestions();
+});
+document.getElementById('modal-start')?.addEventListener('change', e => {
+  state.modalState.startDate = e.target.value;
+  updateCoverageSuggestions();
+});
+document.getElementById('modal-end')?.addEventListener('change', e => {
+  state.modalState.endDate = e.target.value;
+  updateCoverageSuggestions();
 });
 
 // --- Init ---
-setupDragDrop();
-renderZones();
-
-// Populate op-select
-const opSelect = document.getElementById('op-select');
-[...state.fh, ...state.bh].forEach(name => {
-  const opt = document.createElement('option');
-  opt.value = name;
-  opt.textContent = name;
-  opSelect.appendChild(opt);
-});
-
-// Initialize Firestore
+renderChips();
 initFirestoreListener();
-
 </script>
 </body>
 </html>

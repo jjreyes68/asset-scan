@@ -755,6 +755,16 @@ const state = {
     currentYear: new Date().getFullYear()
   }
 };
+// Expose state globally so the Firebase module script can reach it
+window.__schedState = state;
+
+// Rerender function callable from module scope
+window.__schedRerender = function(){
+  if(typeof renderTable === 'function') renderTable();
+  if(typeof renderCrewGrid === 'function') renderCrewGrid();
+  if(typeof renderCalendar === 'function') renderCalendar();
+  if(typeof renderTimeOffList === 'function') renderTimeOffList();
+};
 
 function getRoleForOp(posIdx, weekIdx){
   return ROLES[(posIdx + weekIdx) % 5];
@@ -780,11 +790,6 @@ function fmtDateISO(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padS
 
 // --- Firestore Functions ---
 function initFirestoreListener(){
-  console.log('Initializing Firestore listener...');
-  console.log('Firebase DB available:', !!window.firebaseDB);
-  console.log('Firebase collection available:', !!window.firebaseCollection);
-  console.log('Firebase query available:', !!window.firebaseQuery);
-  console.log('Firebase onSnapshot available:', !!window.firebaseOnSnapshot);
   
   if(!window.firebaseDB){
     console.error('Firebase DB not available');
@@ -795,25 +800,16 @@ function initFirestoreListener(){
   try{
     // Try without orderBy first to avoid index requirements
     const q = window.firebaseCollection(window.firebaseDB, 'timeOffRequests');
-    console.log('Setting up snapshot listener...');
     window.firebaseOnSnapshot(q, (snapshot)=>{
-      console.log('Snapshot received, docs:', snapshot.docs.length);
-      state.timeOffRequests = snapshot.docs.map(doc=>({
-        id: doc.id,
-        ...doc.data()
-      }));
-      console.log('Time-off requests loaded:', state.timeOffRequests.length);
-      console.log('Time-off requests data:', state.timeOffRequests);
-      
-      // Log each request for debugging
-      state.timeOffRequests.forEach(req => {
-        console.log('Request:', req.personName, req.type, req.startDate, 'to', req.endDate, 'coverage:', req.coverage);
-      });
-      
-      renderTable();
-      renderCrewGrid();
-      renderCalendar();
-      renderTimeOffList();
+      const docs = snapshot.docs.map(doc=>({ id: doc.id, ...doc.data() }));
+      // Use window.__schedState so this module-scope callback reaches the main script's state
+      if(window.__schedState){
+        window.__schedState.timeOffRequests = docs;
+      }
+      // Also call rerender via window function to avoid module scope issues
+      if(typeof window.__schedRerender === 'function'){
+        window.__schedRerender();
+      }
     }, (error)=>{
       console.error('Snapshot listener error:', error);
       console.error('Error code:', error.code);
@@ -829,16 +825,13 @@ function initFirestoreListener(){
 }
 
 async function saveTimeOffRequest(data){
-  console.log('Firebase DB available:', !!window.firebaseDB);
   if(!window.firebaseDB){
     alert('Firebase not initialized. Please check console for details.');
     return;
   }
   try{
-    console.log('Saving time-off request:', data);
     if(data.id){
-      console.log('Updating existing document:', data.id);
-      await window.firebaseUpdateDoc(window.firebaseDoc(window.firebaseDB, 'timeOffRequests', data.id), {
+        await window.firebaseUpdateDoc(window.firebaseDoc(window.firebaseDB, 'timeOffRequests', data.id), {
         type: data.type,
         personName: data.personName,
         startDate: data.startDate,
@@ -846,10 +839,8 @@ async function saveTimeOffRequest(data){
         coverage: data.coverage,
         updatedAt: new Date().toISOString()
       });
-      console.log('Update successful');
-    }else{
-      console.log('Creating new document');
-      const docRef = await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'timeOffRequests'), {
+      }else{
+        const docRef = await window.firebaseAddDoc(window.firebaseCollection(window.firebaseDB, 'timeOffRequests'), {
         type: data.type,
         personName: data.personName,
         startDate: data.startDate,
@@ -859,8 +850,7 @@ async function saveTimeOffRequest(data){
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       });
-      console.log('Create successful, doc ID:', docRef.id);
-    }
+      }
   }catch(e){
     console.error('Error saving time-off request:', e);
     console.error('Error code:', e.code);

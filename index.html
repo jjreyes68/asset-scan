@@ -792,10 +792,8 @@ function initFirestoreListener(){
   }
   
   try{
-    const q = window.firebaseQuery(
-      window.firebaseCollection(window.firebaseDB, 'timeOffRequests'),
-      window.firebaseOrderBy('createdAt', 'desc')
-    );
+    // Try without orderBy first to avoid index requirements
+    const q = window.firebaseCollection(window.firebaseDB, 'timeOffRequests');
     console.log('Setting up snapshot listener...');
     window.firebaseOnSnapshot(q, (snapshot)=>{
       console.log('Snapshot received, docs:', snapshot.docs.length);
@@ -805,6 +803,12 @@ function initFirestoreListener(){
       }));
       console.log('Time-off requests loaded:', state.timeOffRequests.length);
       console.log('Time-off requests data:', state.timeOffRequests);
+      
+      // Log each request for debugging
+      state.timeOffRequests.forEach(req => {
+        console.log('Request:', req.personName, req.type, req.startDate, 'to', req.endDate, 'coverage:', req.coverage);
+      });
+      
       renderTable();
       renderCrewGrid();
       renderCalendar();
@@ -813,11 +817,13 @@ function initFirestoreListener(){
       console.error('Snapshot listener error:', error);
       console.error('Error code:', error.code);
       console.error('Error message:', error.message);
+      alert(`Firestore error: ${error.message}`);
     });
   }catch(e){
     console.error('Error setting up Firestore listener:', e);
     console.error('Error code:', e.code);
     console.error('Error message:', e.message);
+    alert(`Error setting up Firestore: ${e.message}`);
   }
 }
 
@@ -1006,21 +1012,69 @@ function updateCoverageSuggestions(){
   });
 }
 
+// Helper function to normalize date to ISO string format
+function normalizeDate(date){
+  if(typeof date === 'string'){
+    return date.trim();
+  } else if(date && typeof date.toDate === 'function'){
+    return fmtDateISO(date.toDate());
+  }
+  return null;
+}
+
 function getTimeOffForPerson(personName, dateStr){
   const d = dateStr.trim();
-  const match = state.timeOffRequests.find(req =>
-    req.personName === personName &&
-    req.startDate && req.endDate &&
-    d >= req.startDate.trim() &&
-    d <= req.endDate.trim()
-  );
+  const match = state.timeOffRequests.find(req => {
+    if(req.personName !== personName) return false;
+    if(!req.startDate || !req.endDate) return false;
+    
+    // Handle different date formats (strings or Timestamps)
+    let startStr, endStr;
+    if(typeof req.startDate === 'string'){
+      startStr = req.startDate.trim();
+    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
+      startStr = fmtDateISO(req.startDate.toDate());
+    } else {
+      return false;
+    }
+    
+    if(typeof req.endDate === 'string'){
+      endStr = req.endDate.trim();
+    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
+      endStr = fmtDateISO(req.endDate.toDate());
+    } else {
+      return false;
+    }
+    
+    return d >= startStr && d <= endStr;
+  });
   return match || null;
 }
 
 function getCoverageForPerson(personName, dateStr){
   const coveringFor = [];
   state.timeOffRequests.forEach(req => {
-    if(req.startDate && req.endDate && dateStr >= req.startDate.trim() && dateStr <= req.endDate.trim()){
+    if(!req.startDate || !req.endDate) return;
+    
+    // Handle different date formats (strings or Timestamps)
+    let startStr, endStr;
+    if(typeof req.startDate === 'string'){
+      startStr = req.startDate.trim();
+    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
+      startStr = fmtDateISO(req.startDate.toDate());
+    } else {
+      return;
+    }
+    
+    if(typeof req.endDate === 'string'){
+      endStr = req.endDate.trim();
+    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
+      endStr = fmtDateISO(req.endDate.toDate());
+    } else {
+      return;
+    }
+    
+    if(dateStr >= startStr && dateStr <= endStr){
       if(req.coverage && req.coverage.includes(personName)){
         coveringFor.push(req.personName);
       }
@@ -1032,7 +1086,27 @@ function getCoverageForPerson(personName, dateStr){
 function getCoverageForDate(dateStr){
   const coverage = {};
   state.timeOffRequests.forEach(req => {
-    if(req.startDate && req.endDate && dateStr >= req.startDate.trim() && dateStr <= req.endDate.trim()){
+    if(!req.startDate || !req.endDate) return;
+    
+    // Handle different date formats (strings or Timestamps)
+    let startStr, endStr;
+    if(typeof req.startDate === 'string'){
+      startStr = req.startDate.trim();
+    } else if(req.startDate && typeof req.startDate.toDate === 'function'){
+      startStr = fmtDateISO(req.startDate.toDate());
+    } else {
+      return;
+    }
+    
+    if(typeof req.endDate === 'string'){
+      endStr = req.endDate.trim();
+    } else if(req.endDate && typeof req.endDate.toDate === 'function'){
+      endStr = fmtDateISO(req.endDate.toDate());
+    } else {
+      return;
+    }
+    
+    if(dateStr >= startStr && dateStr <= endStr){
       (req.coverage || []).forEach(coverPerson => {
         if(!coverage[coverPerson]) coverage[coverPerson] = [];
         coverage[coverPerson].push(req.personName);
@@ -1165,7 +1239,11 @@ function renderCalendar(){
 
     if(weekIdx >= 0 && weekIdx < 52){
       const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-      const offToday = state.timeOffRequests.filter(r => r.startDate && r.endDate && dateStr >= r.startDate.trim() && dateStr <= r.endDate.trim());
+      const offToday = state.timeOffRequests.filter(r => {
+        const startStr = normalizeDate(r.startDate);
+        const endStr = normalizeDate(r.endDate);
+        return startStr && endStr && dateStr >= startStr && dateStr <= endStr;
+      });
 
       // Show first 3 people, then +N more
       const MAX_SHOW = 3;
@@ -1233,7 +1311,11 @@ function renderDayPanel(dateStr){
   }
 
   const effectiveCrew = getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr);
-  const offToday = state.timeOffRequests.filter(r => r.startDate && r.endDate && dateStr >= r.startDate.trim() && dateStr <= r.endDate.trim());
+  const offToday = state.timeOffRequests.filter(r => {
+    const startStr = normalizeDate(r.startDate);
+    const endStr = normalizeDate(r.endDate);
+    return startStr && endStr && dateStr >= startStr && dateStr <= endStr;
+  });
   const icons = {vacation:'🏖️',sick:'🤒',personal:'📅'};
 
   // Split into day and night
@@ -1418,11 +1500,13 @@ function getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr){
     const timeOff = getTimeOffForPerson(person.name, dateStr);
     if(timeOff){
       // Person is off — find who is covering them
-      const req = state.timeOffRequests.find(r =>
-        r.personName === person.name &&
-        r.startDate && r.endDate &&
-        dateStr >= r.startDate.trim() && dateStr <= r.endDate.trim()
-      );
+      const req = state.timeOffRequests.find(r => {
+        const startStr = normalizeDate(r.startDate);
+        const endStr = normalizeDate(r.endDate);
+        return r.personName === person.name &&
+          startStr && endStr &&
+          dateStr >= startStr && dateStr <= endStr;
+      });
       if(req && req.coverage && req.coverage.length > 0){
         req.coverage.forEach(coverName => {
           // Add cover person in the absent person's role
@@ -1454,7 +1538,9 @@ function getEffectiveCrewForDay(weekIdx, dayOfWeek, dateStr){
 function getCoverageExtraShifts(personName, dateStr){
   const extras = [];
   state.timeOffRequests.forEach(req => {
-    if(req.startDate && req.endDate && dateStr >= req.startDate.trim() && dateStr <= req.endDate.trim()){
+    const startStr = normalizeDate(req.startDate);
+    const endStr = normalizeDate(req.endDate);
+    if(startStr && endStr && dateStr >= startStr && dateStr <= endStr){
       if(req.coverage && req.coverage.includes(personName)){
         // Find the role of the absent person on this date
         const dateObj = new Date(dateStr + 'T12:00:00');
